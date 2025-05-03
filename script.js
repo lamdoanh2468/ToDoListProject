@@ -39,3 +39,10 @@ toDoInput.addEventListener("keydown", (e) => {
         addTask();
     }
 });
+/*Object.assign(border.style,{
+    width :
+    height :
+    
+
+})
+*/
