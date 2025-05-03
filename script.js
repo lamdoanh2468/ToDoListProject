@@ -10,29 +10,51 @@ function addTask() {
     }
     //Create li tag
     const li = document.createElement("li");
-    li.innerText = taskText;
+    const span = document.createElement("span");
+    span.innerText = taskText;
+    span.classList.add("to-do");
     //Create delete button
     const delBtn = document.createElement("button");
     delBtn.innerText = "Delete";
-    delBtn.style.marginLeft = "10px";
+    delBtn.style.margin = "0 10px"; // Adjusted margin
     //Delete Event
-    delBtn.addEventListener("click", () => {
-        li.remove();
+    delBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const wannaDelete = window.confirm("Do you want to delete this task");
+        if (wannaDelete) {
+            li.remove();
+        }
+
+    });
+    const editBtn = document.createElement("button");
+    editBtn.innerText = "Edit";
+    editBtn.style.margin = "0 10px"; // Adjusted margin
+    editBtn.addEventListener("click", (e) => {
+        const editMessage = prompt("Edit the task");
+        if (editMessage != null || editMessage.value.trim() != "") {
+            e.stopPropagation();
+            span.innerText = editMessage;
+        }
     });
     //Complete Task Event
     li.addEventListener("click", () => {
-        li.classList.toggle("completed")
+        const testClass = span.classList;
+        testClass.toggle("completed");
+        testClass.toggle("to-do");
     });
-    //Add del to li
+    //Add buttons to li
+    li.appendChild(span);
     li.appendChild(delBtn);
-
+    li.appendChild(editBtn);
     //Add li to ul
     toDoList.appendChild(li);
     //Clear input
     toDoInput.value = "";
 }
 //add event
-addBtn.addEventListener("click", addTask);
+const addEvent = addBtn.addEventListener("click", () => {
+    setTimeout(addTask, 1000);
+});
 //enter input 
 toDoInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
