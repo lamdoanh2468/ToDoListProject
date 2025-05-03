@@ -11,7 +11,7 @@ function addTask() {
     //Create li tag
     const li = document.createElement("li");
     const span = document.createElement("span");
-    span.innerText = taskText;
+    span.innerText = taskText+ "✅";
     span.classList.add("to-do");
     //Create delete button
     const delBtn = document.createElement("button");
@@ -39,8 +39,14 @@ function addTask() {
     //Complete Task Event
     li.addEventListener("click", () => {
         const testClass = span.classList;
-        testClass.toggle("completed");
-        testClass.toggle("to-do");
+        if (testClass.contains("completed")) {
+            testClass.remove("completed");
+            span.innerText = taskText + "✅";
+            testClass.add("to-do");
+        } else {
+            testClass.remove("to-do");
+            testClass.add("completed");
+        }
     });
     //Add buttons to li
     li.appendChild(span);
