@@ -10,9 +10,12 @@ function addTask() {
     }
     //Create li tag
     const li = document.createElement("li");
-    const span = document.createElement("span");
-    span.innerText = taskText+ "✅";
-    span.classList.add("to-do");
+    const textSpan = document.createElement("span");
+    textSpan.innerText = taskText + "✅";
+    textSpan.classList.add("to-do");
+    const statusSpan = document.createElement("span");
+    statusSpan.innerText ="✅";
+    statusSpan.classList.add("status");
     //Create delete button
     const delBtn = document.createElement("button");
     delBtn.innerText = "Delete";
@@ -39,14 +42,9 @@ function addTask() {
     //Complete Task Event
     li.addEventListener("click", () => {
         const testClass = span.classList;
-        if (testClass.contains("completed")) {
-            testClass.remove("completed");
-            span.innerText = taskText + "✅";
-            testClass.add("to-do");
-        } else {
-            testClass.remove("to-do");
-            testClass.add("completed");
-        }
+        testClass.toggle("completed");
+        testClass.toggle("to-do");
+
     });
     //Add buttons to li
     li.appendChild(span);
