@@ -1,6 +1,9 @@
 const toDoInput = document.getElementById("toDoInput");
 const addBtn = document.getElementById("addBtn");
 const toDoList = document.getElementById("todoList");
+var countTask = 0;
+const h2Task = document.getElementById("total-task");
+const totalText = h2Task.innerText;
 //Func add task
 function addTask() {
     const taskText = toDoInput.value.trim();
@@ -10,12 +13,9 @@ function addTask() {
     }
     //Create li tag
     const li = document.createElement("li");
-    const textSpan = document.createElement("span");
-    textSpan.innerText = taskText + "✅";
-    textSpan.classList.add("to-do");
-    const statusSpan = document.createElement("span");
-    statusSpan.innerText ="✅";
-    statusSpan.classList.add("status");
+    const span = document.createElement("span");
+    span.innerText = taskText
+    span.classList.add("to-do");
     //Create delete button
     const delBtn = document.createElement("button");
     delBtn.innerText = "Delete";
@@ -27,7 +27,6 @@ function addTask() {
         if (wannaDelete) {
             li.remove();
         }
-
     });
     const editBtn = document.createElement("button");
     editBtn.innerText = "Edit";
@@ -42,10 +41,13 @@ function addTask() {
     //Complete Task Event
     li.addEventListener("click", () => {
         const testClass = span.classList;
-        testClass.toggle("completed");
         testClass.toggle("to-do");
-
+        testClass.toggle("completed");
     });
+    //Update total task 
+    countTask++;
+
+    h2Task.innerText = totalText + countTask + "";
     //Add buttons to li
     li.appendChild(span);
     li.appendChild(delBtn);
@@ -65,10 +67,4 @@ toDoInput.addEventListener("keydown", (e) => {
         addTask();
     }
 });
-/*Object.assign(border.style,{
-    width :
-    height :
-    
 
-})
-*/

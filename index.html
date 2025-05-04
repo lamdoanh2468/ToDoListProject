@@ -28,25 +28,27 @@
             padding: 12px;
             background: #393E46;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 1px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        li span{
+
+        li span {
             flex-grow: 1;
             text-align: left;
             margin-right: 10px;
             overflow-wrap: break-word;
         }
+
         button {
             font-size: medium;
             padding: 10px 10px;
         }
 
         li button {
-            border-radius: 20px;
+            border-radius: 5px;
             background-color: #F2E2B1;
         }
 
@@ -61,21 +63,56 @@
         #toDoInput {
             width: 300px;
             height: 40px;
-            font-size: medium;
+            font-size: 2vmax;
             padding: 5px;
             border-radius: 5px;
             border: 1px solid #ddd;
+        }
+
+        #addBtn {
+            border-radius: 5px;
+            padding-left: 25px;
+            padding-right: 25px;
+            background-color: #F7CFD8;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+        }
+        #addBtn:hover{
+            background-color: #FF8282;
+        }
+
+
+        @keyframes taskAnimation {
+
+            0% {
+                color: #FEF3E2;
+            }
+
+            50% {
+                color: #F3C623;
+            }
+
+            100% {
+                color: #FFB22C
+            }
+        }
+
+        #total-task {
+            color: #FEF3E2;
+            animation: taskAnimation 3s infinite;
+
         }
     </style>
 </head>
 
 <body>
     <h1 contenteditable=""> My To-Do List</h1>
+    <h2 id="total-task">Total Task: </h2>
     <input type="text" id="toDoInput" placeholder="Enter your task...">
     <button id="addBtn">Add</button>
     <ul id="todoList"></ul>
     <script src="script.js"></script>
-    
 </body>
 
 </html>
