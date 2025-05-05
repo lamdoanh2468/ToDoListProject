@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: larger;
+    margin: 40px;
+    background-image: url(https://images.expothemes.com/macos-monterey/images/macos-monterey-windows-theme-4-hd.jpg);
+    text-align: center;
+}
+
+h1 {
+    color: #FCF259;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin: 10px 0;
+    padding: 12px;
+    background: #393E46;
+    border: 1px solid #ddd;
+    border-radius: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+li span {
+    flex-grow: 1;
+    text-align: left;
+    margin-right: 10px;
+    overflow-wrap: break-word;
+}
+
+button {
+    font-size: medium;
+    font-weight: bold;
+    padding: 10px 10px;
+}
+
+@keyframes buttonAnimation {
+    0% {
+        background-color: #FCEFCB;
+    }
+
+    100% {
+        background-color: #FAD59A;
+    }
+}
+
+li button {
+    border-radius: 5px;
+    background-color: #FCEFCB;
+    animation: buttonAnimation 5s infinite;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: rgb(218, 140, 140);
+}
+
+.to-do {
+    color: #A4B465;
+}
+
+#toDoInput {
+    width: 300px;
+    height: 40px;
+    font-size: 2vmin;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+#addBtn {
+    border-radius: 5px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: #DDEB9D;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 550;
+    
+}
+
+@keyframes addAnimation {
+    0% {
+        background-color: #DDEB9D;
+    }
+
+    100% {
+        background-color: #A0C878;
+    }
+}
+
+
+#addBtn:hover {
+    /*Animation : name duration timing-functiong delay loop */
+    animation: addAnimation 1s ease-in-out forwards;
+}
+
+#total-task {
+    color: #F3C623;
+}

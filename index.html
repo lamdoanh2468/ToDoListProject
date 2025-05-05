@@ -5,111 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: larger;
-            margin: 40px;
-            background-image: url(https://th.bing.com/th/id/R.2655c8560a2414bd41e0b70fc3d5972e?rik=QB2Ikaak%2fUdrjw&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2f0%2ff%2ff%2f294822.jpg&ehk=CvgW2ukvApDT8jXZm%2bkCsfJxxu4UASBynPFAcZbz6cs%3d&risl=&pid=ImgRaw&r=0);
-            text-align: center;
-        }
-
-        h1 {
-            color: #ddd;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin: 10px 0;
-            padding: 12px;
-            background: #393E46;
-            border: 1px solid #ddd;
-            border-radius: 1px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        li span {
-            flex-grow: 1;
-            text-align: left;
-            margin-right: 10px;
-            overflow-wrap: break-word;
-        }
-
-        button {
-            font-size: medium;
-            padding: 10px 10px;
-        }
-
-        li button {
-            border-radius: 5px;
-            background-color: #F2E2B1;
-        }
-
-        .completed {
-            text-decoration: line-through;
-            color: rgb(218, 140, 140);
-        }
-
-        .to-do {
-            color: green;
-        }
-        #toDoInput {
-            width: 300px;
-            height: 40px;
-            font-size: 2vmax;
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        #addBtn {
-            border-radius: 5px;
-            padding-left: 25px;
-            padding-right: 25px;
-            background-color: #F7CFD8;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-        }
-        #addBtn:hover{
-            background-color: #FF8282;
-        }
-
-
-        @keyframes taskAnimation {
-
-            0% {
-                color: #FEF3E2;
-            }
-
-            50% {
-                color: #F3C623;
-            }
-
-            100% {
-                color: #FFB22C
-            }
-        }
-
-        #total-task {
-            color: #FEF3E2;
-            animation: taskAnimation 3s infinite;
-
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <h1 contenteditable=""> My To-Do List</h1>
     <h2 id="total-task">Total Task: </h2>
-    <input type="text" id="toDoInput" placeholder="Enter your task...">
+    <input type="text" id="toDoInput">
     <button id="addBtn">Add</button>
     <ul id="todoList"></ul>
     <script src="script.js"></script>
