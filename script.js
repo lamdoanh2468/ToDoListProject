@@ -118,19 +118,21 @@ const mainTitle = document.querySelector(".main-title");
 if (mainTitle != null) {
     mainTitle.addEventListener("click", () => {
         const editTitle = prompt("What title do you want to ?")
-        mainTitle.innerText = editTitle;
+        if (editTitle.length != 0) {
+            mainTitle.innerText = editTitle;
+        }
     });
 } else {
     console.warn("System Error:(");
 }
-//Handling Selecting Background image
+//Handling Selecting Background image 
 const openModalBtn = document.getElementById("openModal");
 const modal = document.getElementById("modal");
 const closeModalBtn = document.getElementById("closeModal");
 const images = document.querySelectorAll(".image-options img");
 //
 openModalBtn.addEventListener("click", () => {
-    modal.classList.remove("hidden","hide");
+    modal.classList.remove("hidden", "hide");
     modal.classList.add("show");
 })
 closeModalBtn.addEventListener("click", () => {
@@ -149,6 +151,11 @@ images.forEach((img) => {
         document.body.style.backgroundImage = `url(${url})`;
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
+        document.body.style.minHeight = "100vh";
+        /*background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        text-align: center; */
     })
 }
 );
