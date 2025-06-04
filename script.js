@@ -88,6 +88,11 @@ function renderTask() {
         });
         //Update total task 
         h2Task.innerText = totalText + tasks.length;
+        //Set color to total task 's text
+        const subColorPicker = document.getElementById("tasks-color-picker");
+        subColorPicker.addEventListener("input",()=>{
+        h2Task.style.color = subColorPicker.value;
+        })
         //Add buttons to li
         li.appendChild(span);
         li.appendChild(delBtn);
@@ -118,7 +123,7 @@ const turnOffInput = toDoInput.addEventListener("mouseout", () => {
     toDoInput.placeholder = "";
 });
 //Change the title of to-do list
-const mainTitle = document.querySelector(".main-title");
+const mainTitle = document.getElementById("main-title");
 if (mainTitle != null) {
     mainTitle.addEventListener("click", () => {
         const editTitle = prompt("What title do you want to ?")
@@ -126,6 +131,12 @@ if (mainTitle != null) {
             mainTitle.innerText = editTitle;
         }
     });
+    //Change color 's title
+    const colorPicker = document.getElementById("main-title-color-picker");
+    colorPicker.addEventListener("input", () => {
+        mainTitle.style.color = colorPicker.value;
+    });
+
 } else {
     console.warn("System Error:(");
 }

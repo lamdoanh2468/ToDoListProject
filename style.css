@@ -13,6 +13,14 @@ h1 {
     color: #FCF259;
 }
 
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    margin-bottom :15px;
+}
 ul {
     list-style-type: none;
     padding: 0;
@@ -169,7 +177,7 @@ li button {
 .modal-hidden {
     background: rgba(0, 0, 0, 0.5);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    
+
 }
 
 .image-options {
@@ -226,6 +234,7 @@ li button {
 .btn:active {
     background-color: #87dbd0;
 }
+
 /*Close Button*/
 .close-btn {
     background-color: #ff6f91;
