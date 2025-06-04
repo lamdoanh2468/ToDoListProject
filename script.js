@@ -9,9 +9,16 @@ let tasks = [];
 function loadStorage() {
     window.onload = () => {
         const savedTasks = localStorage.getItem("tasks");
+        const savedBackground = localStorage.getItem("backgroundUrl");
         if (savedTasks) {
             tasks = JSON.parse(savedTasks);
             renderTask();
+        }
+        if (savedBackground) {
+            document.body.style.backgroundImage = `url(${savedBackground})`;
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundPosition = "center";
+            document.body.style.minHeight = "100vh";
         }
     }
 }
@@ -87,10 +94,7 @@ function renderTask() {
         li.appendChild(editBtn);
         //Add li to ul
         toDoList.appendChild(li);
-
-
     })
-
 }
 function saveTask() {
     localStorage.setItem("tasks", JSON.stringify(tasks))
@@ -130,7 +134,8 @@ const openModalBtn = document.getElementById("openModal");
 const modal = document.getElementById("modal");
 const closeModalBtn = document.getElementById("closeModal");
 const images = document.querySelectorAll(".image-options img");
-//
+modal.classList.add("hidden");
+modal.classList.add("hide");
 openModalBtn.addEventListener("click", () => {
     modal.classList.remove("hidden", "hide");
     modal.classList.add("show");
@@ -152,13 +157,10 @@ images.forEach((img) => {
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
         document.body.style.minHeight = "100vh";
-        /*background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        text-align: center; */
+        localStorage.setItem("backgroundUrl", url);
+       
     })
-}
-);
+});
 
 
 

@@ -169,7 +169,7 @@ li button {
 .modal-hidden {
     background: rgba(0, 0, 0, 0.5);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-
+    
 }
 
 .image-options {
@@ -252,5 +252,5 @@ li button {
 }
 
 .close-btn:active {
-    background-color: #87dbd0;
+    background-color: #fc8e78;
 }
