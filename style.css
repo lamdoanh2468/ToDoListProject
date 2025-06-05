@@ -263,3 +263,58 @@ li button {
 .close-btn:active {
     background-color: #fc8e78;
 }
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    margin: 15px 0;
+    background-color: #7F8CAA;
+    border-radius: 5px;
+}
+
+.task-content {
+    margin-right: 15px;
+}
+
+.task-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.task-button {
+    min-width: 80px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+
+.priority-button {
+    min-width: 80px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+
+.priority-high {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.priority-medium {
+    background-color: #ffd93d;
+    color: black;
+}
+
+.priority-low {
+    background-color: #6bff6b;
+    color: black;
+}
