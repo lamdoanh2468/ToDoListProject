@@ -1,177 +1,248 @@
+// DOM Elements
 const toDoInput = document.getElementById("toDoInput");
 const addBtn = document.getElementById("addBtn");
 const toDoList = document.getElementById("todoList");
-var countTask = 0;
+const mainTitle = document.getElementById("main-title");
+const colorPicker = document.getElementById("main-title-color-picker");
+const subColorPicker = document.getElementById("tasks-color-picker");
 const h2Task = document.getElementById("total-task");
 const totalText = h2Task.innerText;
+
+// State variables
 let tasks = [];
-//Load savedTasks from local storage -> Convert string to JSON
+let countTask = 0;
+
+// Initialize application when window loads
+window.addEventListener('load', initializeApp);
+
+function initializeApp() {
+    loadStorage();
+    setupEventListeners();
+}
+
+// Load data from localStorage
 function loadStorage() {
-    window.onload = () => {
-        const savedTasks = localStorage.getItem("tasks");
-        const savedBackground = localStorage.getItem("backgroundUrl");
-        if (savedTasks) {
-            tasks = JSON.parse(savedTasks);
-            renderTask();
-        }
-        if (savedBackground) {
-            document.body.style.backgroundImage = `url(${savedBackground})`;
-            document.body.style.backgroundSize = "cover";
-            document.body.style.backgroundPosition = "center";
-            document.body.style.minHeight = "100vh";
-        }
+    const savedTasks = localStorage.getItem("tasks");
+    const savedBackground = localStorage.getItem("backgroundUrl");
+    const mainTitleColor = localStorage.getItem("mainTitleColor");
+    const subTitleColor = localStorage.getItem("subTitleColor");
+
+    if (savedTasks) {
+        tasks = JSON.parse(savedTasks);
+        renderTask();
+    }
+
+    if (savedBackground) {
+        setBackgroundImage(savedBackground);
+    }
+
+    if (mainTitleColor) {
+        setMainTitleColor(mainTitleColor);
+    }
+
+    if (subTitleColor) {
+        setSubTitleColor(subTitleColor);
     }
 }
-loadStorage();
-//Func add task
+
+// Setup all event listeners
+function setupEventListeners() {
+    // Add task events
+    addBtn.addEventListener("click", () => setTimeout(addTask, 1000));
+    toDoInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") addTask();
+    });
+
+    // Input placeholder events
+    toDoInput.addEventListener("mouseenter", () => {
+        toDoInput.placeholder = "Enter your task...";
+    });
+    toDoInput.addEventListener("mouseout", () => {
+        toDoInput.placeholder = "";
+    });
+
+    // Title and color picker events
+    if (mainTitle) {
+        mainTitle.addEventListener("click", handleTitleEdit);
+        colorPicker.addEventListener("input", handleMainTitleColorChange);
+    }
+
+    if (subColorPicker) {
+        subColorPicker.addEventListener("input", handleSubTitleColorChange);
+    }
+
+    // Background image modal events
+    setupBackgroundModalEvents();
+}
+
+// Task management functions
 function addTask() {
     const taskText = toDoInput.value.trim();
     if (taskText === "") {
         alert("Please enter a task");
         return;
+    } else {
+        const priorityInput = prompt("What is the type's priority of this task?")
+        tasks.push({ text: taskText, completed: false, priority: priorityInput });
+        saveTasks();
+        renderTask();
+        toDoInput.value = "";
     }
-    const newTask = { text: taskText, completed: false };
-    tasks.push(newTask);
-    saveTask();
-    renderTask();
-    //Clear input
-    toDoInput.value = "";
-}
-//Save task into LOCAL STORAGE
-function saveTask() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-//Use LocalStorage
-function renderTask() {
-    toDoList.innerHTML = "";
-    tasks.forEach((task, index) => {
-        //Create li tag
+
+    function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function renderTask() {
+        toDoList.innerHTML = "";
+        tasks.forEach((task, index) => {
+            const li = createTaskElement(task, index);
+            toDoList.appendChild(li);
+        });
+        updateTaskCount();
+    }
+
+    function createTaskElement(task, index) {
         const li = document.createElement("li");
         const span = document.createElement("span");
         span.innerText = task.text;
-        if (task.completed) {
-            span.classList.add("completed");
-        } else {
-            span.classList.add("to-do");
-        }
-        //Complete Task Event
+        span.classList.add(task.completed ? "completed" : "to-do");
+
+        // Task completion event
         li.addEventListener("click", () => {
             tasks[index].completed = !tasks[index].completed;
-            saveTask();
+            saveTasks();
             renderTask();
         });
-        //Create delete button
-        const delBtn = document.createElement("button");
-        delBtn.innerText = "Remove";
-        delBtn.style.margin = "0 10px"; // Adjusted margin
-        //Delete Event
-        delBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const wannaDelete = window.confirm("Do you want to remove this task");
-            if (wannaDelete) {
-                tasks.splice(index, 1);
-                saveTask();
-                renderTask();
-            }
-        });
-        const editBtn = document.createElement("button");
-        editBtn.innerText = "Edit";
-        editBtn.style.margin = "0 10px"; // Adjusted margin
-        editBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const editMessage = prompt("Edit the task", task.text);
-            if (editMessage != null || editMessage.value.trim() != "") {
-                tasks[index].text = editMessage.trim();
-                saveTask();
-                renderTask();
-            }
-        });
-        //Update total task 
-        h2Task.innerText = totalText + tasks.length;
-        //Set color to total task 's text
-        const subColorPicker = document.getElementById("tasks-color-picker");
-        subColorPicker.addEventListener("input",()=>{
-        h2Task.style.color = subColorPicker.value;
-        })
-        //Add buttons to li
+
+        // Add buttons
+        const delBtn = createButton("Remove", () => handleDeleteTask(index));
+        const editBtn = createButton("Edit", () => handleEditTask(index, task.text));
+        const priorityBtn = createPriorityButton(task, index, () => handlePriorityTask(index));
         li.appendChild(span);
         li.appendChild(delBtn);
         li.appendChild(editBtn);
-        //Add li to ul
-        toDoList.appendChild(li);
-    })
-}
-function saveTask() {
-    localStorage.setItem("tasks", JSON.stringify(tasks))
-}
-//add event
-const addEvent = addBtn.addEventListener("click", () => {
-    setTimeout(addTask, 1000);
-});
-//enter input 
-toDoInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        addTask();
+        li.appendChild(priorityBtn);
+        return li;
     }
-});
-//Mouse enter : move cursor and tap into element
-//Mouse over : move cursor around element
-toDoInput.addEventListener("mouseenter", () => {
-    toDoInput.placeholder = "Enter your task...";
-});
-const turnOffInput = toDoInput.addEventListener("mouseout", () => {
-    toDoInput.placeholder = "";
-});
-//Change the title of to-do list
-const mainTitle = document.getElementById("main-title");
-if (mainTitle != null) {
-    mainTitle.addEventListener("click", () => {
-        const editTitle = prompt("What title do you want to ?")
-        if (editTitle.length != 0) {
+
+    function createButton(text, onClick) {
+        const button = document.createElement("button");
+        button.innerText = text;
+        button.style.margin = "0 10px";
+        button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            onClick();
+        });
+        return button;
+    }
+    function createPriorityButton(task, index, onClick) {
+        const priorityBtn = document.createElement("button");
+        priorityBtn.innerText = task.priority;
+        priorityBtn.style.margin = "0 10px";
+        priorityBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            onClick();
+        });
+        return priorityBtn;
+    }
+
+    // Event handlers
+    function handleTitleEdit() {
+        const editTitle = prompt("What title do you want to?");
+        if (editTitle && editTitle.length !== 0) {
             mainTitle.innerText = editTitle;
         }
-    });
-    //Change color 's title
-    const colorPicker = document.getElementById("main-title-color-picker");
-    colorPicker.addEventListener("input", () => {
-        mainTitle.style.color = colorPicker.value;
-    });
-
-} else {
-    console.warn("System Error:(");
-}
-//Handling Selecting Background image 
-const openModalBtn = document.getElementById("openModal");
-const modal = document.getElementById("modal");
-const closeModalBtn = document.getElementById("closeModal");
-const images = document.querySelectorAll(".image-options img");
-modal.classList.add("hidden");
-modal.classList.add("hide");
-openModalBtn.addEventListener("click", () => {
-    modal.classList.remove("hidden", "hide");
-    modal.classList.add("show");
-})
-closeModalBtn.addEventListener("click", () => {
-    modal.classList.remove("show");
-    modal.classList.add("hide");
-})
-modal.addEventListener("animationend", function handleHide(e) {
-    if (e.animationName === "fadeOutScale") {
-        modal.classList.add("hidden");
-        // modal.removeEventListener("animationend", handleHide);
     }
-});
-images.forEach((img) => {
-    img.addEventListener("click", () => {
-        const url = img.getAttribute("data-url");
+
+    function handleMainTitleColorChange() {
+        const newColor = colorPicker.value;
+        setMainTitleColor(newColor);
+        localStorage.setItem("mainTitleColor", newColor);
+    }
+    function handleSubTitleColorChange() {
+        const newColor = subColorPicker.value;
+        setSubTitleColor(newColor);
+        localStorage.setItem("subTitleColor", newColor);
+    }
+
+    function handleDeleteTask(index) {
+        const wannaDelete = window.confirm("Do you want to remove this task?");
+        if (wannaDelete) {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTask();
+        }
+    }
+
+    function handleEditTask(index, currentText) {
+        const editMessage = prompt("Edit the task", currentText);
+        if (editMessage != null && editMessage.trim() !== "") {
+            tasks[index].text = editMessage.trim();
+            saveTasks();
+            renderTask();
+        }
+    }
+    function handlePriorityTask(task, index) {
+
+    }
+
+
+    // Utility functions
+    function setMainTitleColor(color) {
+        mainTitle.style.color = color;
+        colorPicker.value = color;
+    }
+
+    function setSubTitleColor(color) {
+        h2Task.style.color = color;
+        subColorPicker.value = color;
+    }
+
+    function setBackgroundImage(url) {
         document.body.style.backgroundImage = `url(${url})`;
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
         document.body.style.minHeight = "100vh";
-        localStorage.setItem("backgroundUrl", url);
-       
-    })
-});
+    }
+
+    function updateTaskCount() {
+        h2Task.innerText = totalText + tasks.length;
+    }
+
+    // Background modal setup
+    function setupBackgroundModalEvents() {
+        const openModalBtn = document.getElementById("openModal");
+        const modal = document.getElementById("modal");
+        const closeModalBtn = document.getElementById("closeModal");
+        const images = document.querySelectorAll(".image-options img");
+
+        modal.classList.add("hidden", "hide");
+
+        openModalBtn.addEventListener("click", () => {
+            modal.classList.remove("hidden", "hide");
+            modal.classList.add("show");
+        });
+
+        closeModalBtn.addEventListener("click", () => {
+            modal.classList.remove("show");
+            modal.classList.add("hide");
+        });
+
+        modal.addEventListener("animationend", (e) => {
+            if (e.animationName === "fadeOutScale") {
+                modal.classList.add("hidden");
+            }
+        });
+
+        images.forEach((img) => {
+            img.addEventListener("click", () => {
+                const url = img.getAttribute("data-url");
+                setBackgroundImage(url);
+                localStorage.setItem("backgroundUrl", url);
+            });
+        });
+    }
 
 
 
