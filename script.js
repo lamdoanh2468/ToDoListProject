@@ -73,6 +73,12 @@ function setupEventListeners() {
 
     // Background image modal events
     setupBackgroundModalEvents();
+
+    // Priority modal close button
+    const closeModalBtn = document.querySelector(".close-modal");
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", hidePriorityModal);
+    }
 }
 
 // Task management functions
@@ -91,10 +97,11 @@ document.querySelectorAll(".priority-option").forEach(btn => {
     btn.addEventListener("click", () => {
         const priority = btn.dataset.priority;
         tasks.push({ text: tempText, completed: false, priority });
-        saveTasks();
-        renderTask();
+        saveTasks();     renderTask();
         hidePriorityModal(); //Close choosing priority window
     });
+        
+
 });
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -115,19 +122,9 @@ function hidePriorityModal() {
     document.getElementById("priorityModal").classList.add("hidden");
 }
 function createTaskElement(task, index) {
-    const li = document.createElement("li");
-    li.classList.add("task-item");
-
-    const contentDiv = document.createElement("div");
-    contentDiv.classList.add("task-content");
-    
-    const span = document.createElement("span");
+    const li = document.createElement("li");    const span = document.createElement("span");
     span.innerText = task.text;
     span.classList.add(task.completed ? "completed" : "to-do");
-    contentDiv.appendChild(span);
-
-    const buttonsDiv = document.createElement("div");
-    buttonsDiv.classList.add("task-buttons");
 
     // Task completion event
     li.addEventListener("click", () => {
@@ -140,52 +137,32 @@ function createTaskElement(task, index) {
     const delBtn = createButton("Remove", () => handleDeleteTask(index));
     const editBtn = createButton("Edit", () => handleEditTask(index, task.text));
     const priorityBtn = createPriorityButton(task, index, () => handlePriorityTask(index));
-    
-    delBtn.classList.add("task-button");
-    editBtn.classList.add("task-button");
-    priorityBtn.classList.add("priority-button");
-    
-    if (task.priority) {
-        priorityBtn.classList.add(`priority-${task.priority.toLowerCase()}`);
-    }
-
-    buttonsDiv.appendChild(delBtn);
-    buttonsDiv.appendChild(editBtn);
-    buttonsDiv.appendChild(priorityBtn);
-
-    li.appendChild(contentDiv);
-    li.appendChild(buttonsDiv);
+    li.appendChild(span);
+    li.appendChild(delBtn);
+    li.appendChild(editBtn);
+    li.appendChild(priorityBtn);
     return li;
 }
 
 function createButton(text, onClick) {
     const button = document.createElement("button");
     button.innerText = text;
+    button.style.margin = "0 10px";
     button.addEventListener("click", (e) => {
         e.stopPropagation();
         onClick();
     });
     return button;
 }
-
 function createPriorityButton(task, index, onClick) {
     const priorityBtn = document.createElement("button");
     priorityBtn.innerText = task.priority || "Set Priority";
+    priorityBtn.style.margin = "0 10px";
     priorityBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         onClick();
     });
     return priorityBtn;
-}
-
-function handlePriorityTask(index) {
-    const priorities = ["High", "Medium", "Low"];
-    const currentPriority = tasks[index].priority;
-    const currentIndex = priorities.indexOf(currentPriority);
-    const nextIndex = (currentIndex + 1) % priorities.length;
-    tasks[index].priority = priorities[nextIndex];
-    saveTasks();
-    renderTask();
 }
 
 // Event handlers
@@ -224,6 +201,7 @@ function handleEditTask(index, currentText) {
         renderTask();
     }
 }
+z``
 
 // Utility functions
 function setMainTitleColor(color) {
