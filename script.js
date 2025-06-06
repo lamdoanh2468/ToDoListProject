@@ -126,7 +126,8 @@ function hidePriorityModal() {
     document.getElementById("priorityModal").classList.add("hidden");
 }
 function createTaskElement(task, index) {
-    const li = document.createElement("li"); const span = document.createElement("span");
+    const li = document.createElement("li"); 
+    const span = document.createElement("span");
     span.innerText = task.text;
     span.classList.add(task.completed ? "completed" : "to-do");
 
