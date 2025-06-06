@@ -109,8 +109,12 @@ function saveTasks() {
 
 function renderTask() {
     toDoList.innerHTML = "";
-    tasks.forEach((task, index) => {
-        const li = createTaskElement(task, index);
+    const sortedTasks = [...tasks].sort((a, b) => {
+        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+    });
+    sortedTasks.forEach((task, index) => {
+        const li = createTaskElement(task, tasks.indexOf(task));
         toDoList.appendChild(li);
     });
     updateTaskCount();
@@ -157,7 +161,7 @@ function createButton(text, onClick) {
 function createPriority(task, li) {
     const priorityText = document.createElement("div");
     priorityText.innerText = task.priority;
-    
+
     // Style cho container
     priorityText.style.margin = "0 10px";
     priorityText.style.padding = "4px 12px";
@@ -168,12 +172,12 @@ function createPriority(task, li) {
     priorityText.style.display = "inline-block";
     priorityText.style.minWidth = "80px";
     priorityText.style.textAlign = "center";
-    
+
     // Style cho border của task
     li.style.borderLeft = "4px solid";
     li.style.margin = "8px 0";
     li.style.transition = "all 0.3s ease";
-    
+
     // Set màu sắc dựa trên priority
     if (task.priority === "high") {
         priorityText.style.backgroundColor = "#ffebee";
@@ -188,7 +192,7 @@ function createPriority(task, li) {
         priorityText.style.color = "#1976d2";
         li.style.borderLeftColor = "#1976d2";
     }
-    
+
     return priorityText;
 }
 
