@@ -97,10 +97,10 @@ document.querySelectorAll(".priority-option").forEach(btn => {
     btn.addEventListener("click", () => {
         const priority = btn.dataset.priority;
         tasks.push({ text: tempText, completed: false, priority });
-        saveTasks();     renderTask();
+        saveTasks(); renderTask();
         hidePriorityModal(); //Close choosing priority window
     });
-        
+
 
 });
 function saveTasks() {
@@ -122,7 +122,7 @@ function hidePriorityModal() {
     document.getElementById("priorityModal").classList.add("hidden");
 }
 function createTaskElement(task, index) {
-    const li = document.createElement("li");    const span = document.createElement("span");
+    const li = document.createElement("li"); const span = document.createElement("span");
     span.innerText = task.text;
     span.classList.add(task.completed ? "completed" : "to-do");
 
@@ -136,7 +136,7 @@ function createTaskElement(task, index) {
     // Add buttons
     const delBtn = createButton("Remove", () => handleDeleteTask(index));
     const editBtn = createButton("Edit", () => handleEditTask(index, task.text));
-    const priorityBtn = createPriorityButton(task, index, () => handlePriorityTask(index));
+    const priorityBtn = createPriority(task, li);
     li.appendChild(span);
     li.appendChild(delBtn);
     li.appendChild(editBtn);
@@ -154,15 +154,42 @@ function createButton(text, onClick) {
     });
     return button;
 }
-function createPriorityButton(task, index, onClick) {
-    const priorityBtn = document.createElement("button");
-    priorityBtn.innerText = task.priority || "Set Priority";
-    priorityBtn.style.margin = "0 10px";
-    priorityBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        onClick();
-    });
-    return priorityBtn;
+function createPriority(task, li) {
+    const priorityText = document.createElement("div");
+    priorityText.innerText = task.priority;
+    
+    // Style cho container
+    priorityText.style.margin = "0 10px";
+    priorityText.style.padding = "4px 12px";
+    priorityText.style.borderRadius = "20px";
+    priorityText.style.fontWeight = "600";
+    priorityText.style.fontSize = "0.9em";
+    priorityText.style.textTransform = "capitalize";
+    priorityText.style.display = "inline-block";
+    priorityText.style.minWidth = "80px";
+    priorityText.style.textAlign = "center";
+    
+    // Style cho border của task
+    li.style.borderLeft = "4px solid";
+    li.style.margin = "8px 0";
+    li.style.transition = "all 0.3s ease";
+    
+    // Set màu sắc dựa trên priority
+    if (task.priority === "high") {
+        priorityText.style.backgroundColor = "#ffebee";
+        priorityText.style.color = "#d32f2f";
+        li.style.borderLeftColor = "#d32f2f";
+    } else if (task.priority === "medium") {
+        priorityText.style.backgroundColor = "#fff3e0";
+        priorityText.style.color = "#f57c00";
+        li.style.borderLeftColor = "#f57c00";
+    } else {
+        priorityText.style.backgroundColor = "#e3f2fd";
+        priorityText.style.color = "#1976d2";
+        li.style.borderLeftColor = "#1976d2";
+    }
+    
+    return priorityText;
 }
 
 // Event handlers
@@ -201,7 +228,6 @@ function handleEditTask(index, currentText) {
         renderTask();
     }
 }
-z``
 
 // Utility functions
 function setMainTitleColor(color) {
