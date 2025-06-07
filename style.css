@@ -185,6 +185,11 @@ button:hover {
     align-items: center;
     z-index: 1000;
     backdrop-filter: blur(5px);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.modal.closing {
+    animation: modalFadeOut 0.3s ease-in forwards;
 }
 
 .modal-dialog {
@@ -193,14 +198,11 @@ button:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     width: 400px;
     max-width: 90%;
-    animation: modalFadeIn 0.3s ease-out;
+    animation: modalScaleIn 0.3s ease-out;
 }
-.remove-modal-dialog {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    max-width: 90%;
-    animation: modalFadeIn 0.3s ease-out;
+
+.modal.closing .modal-dialog {
+    animation: modalScaleOut 0.3s ease-in forwards;
 }
 
 .modal-header {
@@ -334,8 +336,40 @@ button:hover {
     }
 }
 
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes modalScaleOut {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes modalScaleIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .hidden {
     display: none;
+    animation: modalFadeIn 0.4s ease;
 }
 
 /* Style cho color picker */
@@ -384,10 +418,11 @@ input[type="color"]:hover {
 }
 
 .image-options {
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
     padding: 20px;
+    animation: fadeIn 0.5s ease-in;
 }
 
 .image-options img {
@@ -397,11 +432,35 @@ input[type="color"]:hover {
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
+    animation: scaleIn 0.5s ease-out;
 }
 
 .image-options img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 #editModal {

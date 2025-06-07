@@ -134,7 +134,12 @@ function showPriorityModal() {
 }
 
 function hidePriorityModal() {
-    document.getElementById("priorityModal").classList.add("hidden");
+    const modal = document.getElementById("priorityModal");
+    modal.classList.add("closing");
+    setTimeout(() => {
+        modal.classList.add("hidden");
+        modal.classList.remove("closing");
+    }, 300);
 }
 
 function createTaskElement(task, index) {
@@ -243,10 +248,18 @@ function openDialog(typeDialog, index) {
                 tasks.splice(index, 1);
                 saveTasks();
                 renderTask();
-                removeModal.classList.add("hidden");
+                removeModal.classList.add("closing");
+                setTimeout(() => {
+                    removeModal.classList.add("hidden");
+                    removeModal.classList.remove("closing");
+                }, 300);
             });
             noOption.addEventListener("click", () => {
-                removeModal.classList.add("hidden");
+                removeModal.classList.add("closing");
+                setTimeout(() => {
+                    removeModal.classList.add("hidden");
+                    removeModal.classList.remove("closing");
+                }, 300);
             });
             break;
         case "edit":
@@ -257,35 +270,31 @@ function openDialog(typeDialog, index) {
 function handleEditTask(index, currentText) {
     const editModal = document.getElementById("editModal");
     const editInput = document.getElementById("editInput");
-    const saveEditBtn = document.getElementById("saveEdit");
-    const cancelEditBtn = document.getElementById("cancelEdit");
-    
-    // Set current text to input
     editInput.value = currentText;
     editModal.classList.remove("hidden");
 
-    // Save button click handler
-    saveEditBtn.onclick = () => {
+    const saveEdit = document.getElementById("saveEdit");
+    const cancelEdit = document.getElementById("cancelEdit");
+
+    const closeEditModal = () => {
+        editModal.classList.add("closing");
+        setTimeout(() => {
+            editModal.classList.add("hidden");
+            editModal.classList.remove("closing");
+        }, 300);
+    };
+
+    saveEdit.onclick = () => {
         const newText = editInput.value.trim();
-        if (newText !== "") {
+        if (newText) {
             tasks[index].text = newText;
             saveTasks();
             renderTask();
-            editModal.classList.add("hidden");
         }
+        closeEditModal();
     };
 
-    // Cancel button click handler
-    cancelEditBtn.onclick = () => {
-        editModal.classList.add("hidden");
-    };
-
-    // Handle Enter key
-    editInput.onkeydown = (e) => {
-        if (e.key === "Enter") {
-            saveEditBtn.click();
-        }
-    };
+    cancelEdit.onclick = closeEditModal;
 }
 
 // Utility functions
@@ -326,7 +335,7 @@ function setupBackgroundModalEvents() {
 
     closeModalBtn.addEventListener("click", () => {
         modal.classList.remove("show");
-        modal.classList.add("hide");
+        modal.classList.add("hidden");
     });
 
     modal.addEventListener("animationend", (e) => {
