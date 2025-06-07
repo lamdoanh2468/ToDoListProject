@@ -9,18 +9,22 @@
 </head>
 
 <body>
-    <div class="title">
-        <h1 contenteditable="" id="main-title"> My To-Do List</h1>
-        <input type="color" id="main-title-color-picker">
+    <div class="container">
+        <div class="title">
+            <h1 contenteditable="" id="main-title"> My To-Do List</h1>
+            <input type="color" id="main-title-color-picker">
+        </div>
+        <div class="title">
+            <h2 id="total-task">Total Task: </h2>
+            <input type="color" id="tasks-color-picker">
+        </div>
+        <div class="input-group">
+            <input type="text" id="toDoInput" placeholder="Enter your task...">
+            <button id="addBtn">Add</button>
+        </div>
+        <ul id="todoList"></ul>
+        <button id="openModal" class="btn">Select Background</button>
     </div>
-    <div class="title">
-        <h2 id="total-task">Total Task: </h2>
-        <input type="color" id="tasks-color-picker">
-    </div>
-    <input type="text" id="toDoInput">
-    <button id="addBtn">Add</button>
-    <ul id="todoList"></ul>
-    <button id="openModal" class="btn">Select Background</button>
     <div id="modal" class="modal-hidden">
         <div class="modal-content">
             `
@@ -43,6 +47,7 @@
         </div>
         <button id="closeModal" class="close-btn">Close</button>
     </div>
+    <!-- Choose priority modal -->
     <div id="priorityModal" class="modal hidden">
         <div class="modal-dialog">
             <div class="modal-header">
@@ -54,6 +59,21 @@
                     <button class="priority-option" data-priority="high">High</button>
                     <button class="priority-option" data-priority="medium">Medium</button>
                     <button class="priority-option" data-priority="low">Low</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Remove Task -->
+    <div id="removeModal" class="modal hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Do you want to remove this task?</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="options">
+                    <button id="yes-option" name="yes">Yes</button>
+                    <button id="no-option" name="no">No</button>
                 </div>
             </div>
         </div>
