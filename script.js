@@ -93,16 +93,22 @@ function addTask() {
         showPriorityModal(); //Open choosing priority window
     }
 }
+
 document.querySelectorAll(".priority-option").forEach(btn => {
     btn.addEventListener("click", () => {
         const priority = btn.dataset.priority;
-        tasks.push({ text: tempText, completed: false, priority });
-        saveTasks(); renderTask();
+        const newTask = {
+            text: tempText,
+            completed: false,
+            priority: priority
+        };
+        tasks.push(newTask);
+        saveTasks();
+        renderTask();
         hidePriorityModal(); //Close choosing priority window
     });
-
-
 });
+
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
@@ -122,16 +128,19 @@ function renderTask() {
         updateTaskCount();
     });
 }
+
 function showPriorityModal() {
     document.getElementById("priorityModal").classList.remove("hidden");
 }
+
 function hidePriorityModal() {
     document.getElementById("priorityModal").classList.add("hidden");
 }
+
 function createTaskElement(task, index) {
     const li = document.createElement("li");
     const span = document.createElement("span");
-    span.innerText = task.text;
+    span.textContent = task.text;
     span.classList.add(task.completed ? "completed" : "to-do");
 
     // Task completion event
@@ -162,6 +171,7 @@ function createButton(text, onClick) {
     });
     return button;
 }
+
 function createPriority(task, li) {
     const priorityText = document.createElement("div");
     priorityText.innerText = task.priority;
@@ -213,11 +223,13 @@ function handleMainTitleColorChange() {
     setMainTitleColor(newColor);
     localStorage.setItem("mainTitleColor", newColor);
 }
+
 function handleSubTitleColorChange() {
     const newColor = subColorPicker.value;
     setSubTitleColor(newColor);
     localStorage.setItem("subTitleColor", newColor);
 }
+
 function openDialog(typeDialog, index) {
     switch (typeDialog) {
         case "remove":
@@ -240,7 +252,6 @@ function openDialog(typeDialog, index) {
         case "edit":
             break;
     }
-
 }
 
 function handleEditTask(index, currentText) {

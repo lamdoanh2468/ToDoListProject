@@ -71,13 +71,29 @@ h2 {
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.9);
 }
-
 #toDoInput:focus {
     outline: none;
     border-color: #3498db;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
+#toDoInput:hover {
+    animation: inputPulse 0.4s;
+}
 
+@keyframes inputPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.3);
+        border-color: #e9ecef;
+    }
+    60% {
+        box-shadow: 0 0 10px 6px rgba(52, 152, 219, 0.15);
+        border-color: #3498db;
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.0);
+        border-color: #3498db;
+    }
+}
 #addBtn {
     background-color: #3498db;
     color: white;
@@ -179,6 +195,13 @@ button:hover {
     max-width: 90%;
     animation: modalFadeIn 0.3s ease-out;
 }
+.remove-modal-dialog {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    animation: modalFadeIn 0.3s ease-out;
+}
 
 .modal-header {
     padding: 20px;
@@ -252,23 +275,23 @@ button:hover {
     transition: all 0.3s ease;
 }
 
-.yes-option {
+#yes-option {
     background-color: #e74c3c;
     color: white;
 }
 
-.yes-option:hover {
+#yes-option:hover {
     background-color: #c0392b;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
 
-.no-option {
+#no-option {
     background-color: #95a5a6;
     color: white;
 }
 
-.no-option:hover {
+#no-option:hover {
     background-color: #7f8c8d;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
