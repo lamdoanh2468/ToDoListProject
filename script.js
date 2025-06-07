@@ -255,12 +255,37 @@ function openDialog(typeDialog, index) {
 }
 
 function handleEditTask(index, currentText) {
-    const editMessage = prompt("Edit the task", currentText);
-    if (editMessage != null && editMessage.trim() !== "") {
-        tasks[index].text = editMessage.trim();
-        saveTasks();
-        renderTask();
-    }
+    const editModal = document.getElementById("editModal");
+    const editInput = document.getElementById("editInput");
+    const saveEditBtn = document.getElementById("saveEdit");
+    const cancelEditBtn = document.getElementById("cancelEdit");
+    
+    // Set current text to input
+    editInput.value = currentText;
+    editModal.classList.remove("hidden");
+
+    // Save button click handler
+    saveEditBtn.onclick = () => {
+        const newText = editInput.value.trim();
+        if (newText !== "") {
+            tasks[index].text = newText;
+            saveTasks();
+            renderTask();
+            editModal.classList.add("hidden");
+        }
+    };
+
+    // Cancel button click handler
+    cancelEditBtn.onclick = () => {
+        editModal.classList.add("hidden");
+    };
+
+    // Handle Enter key
+    editInput.onkeydown = (e) => {
+        if (e.key === "Enter") {
+            saveEditBtn.click();
+        }
+    };
 }
 
 // Utility functions

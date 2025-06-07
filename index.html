@@ -19,7 +19,7 @@
             <input type="color" id="tasks-color-picker">
         </div>
         <div class="input-group">
-            <input type="text" id="toDoInput" class="toDoInput" placeholder="Enter your task...">
+            <input type="text" id="toDoInput" placeholder="Enter your task...">
             <button id="addBtn">Add</button>
         </div>
         <ul id="todoList"></ul>
@@ -77,6 +77,20 @@
             </div>
         </div>
     </div>
+    <!-- Edit Modal -->
+    <div id="editModal" class="hidden">
+        <div class="edit-modal-content">
+            <div class="edit-modal-header">
+                <h3>Edit Task</h3>
+            </div>
+            <input type="text" id="editInput" placeholder="Edit your task...">
+            <div class="edit-modal-buttons">
+                <button id="cancelEdit">Cancel</button>
+                <button id="saveEdit">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <!-- End Edit Modal -->
     <script src="script.js"></script>
 </body>
 
