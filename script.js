@@ -241,7 +241,7 @@ function openDialog(typeDialog, index) {
             const removeModal = document.getElementById("removeModal");
             removeModal.classList.remove("hidden");
             const message = "Do you want to delete this task";
-            document.querySelector(".modal-header h3").innerText = message;
+            removeModal.querySelector(".modal-header h3").innerText = message;
             const yesOption = document.getElementById('yes-option');
             const noOption = document.getElementById('no-option');
             yesOption.addEventListener("click", () => {
