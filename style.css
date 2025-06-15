@@ -200,7 +200,14 @@ button:hover {
     max-width: 90%;
     animation: modalScaleIn 0.3s ease-out;
 }
-
+.remove-modal-dialog {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    width: 400px;
+    max-width: 90%;
+    animation: modalScaleIn 0.3s ease-out;
+}
 .modal.closing .modal-dialog {
     animation: modalScaleOut 0.3s ease-in forwards;
 }
