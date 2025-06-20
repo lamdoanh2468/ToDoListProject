@@ -11,7 +11,8 @@ let tempText = "";
 // State variables
 let tasks = [];
 let countTask = 0;
-
+let currentTaskIndex = null;
+let modalMode = "add";
 // Initialize application when window loads
 window.addEventListener('load', initializeApp);
 
@@ -79,6 +80,25 @@ function setupEventListeners() {
     if (closeModalBtn) {
         closeModalBtn.addEventListener("click", hidePriorityModal);
     }
+    //Choose priority options each task
+    document.querySelectorAll(".priority-option").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const priority = btn.dataset.priority;
+            if (modalMode === "add") {
+                const newTask = {
+                    text: tempText,
+                    completed: false,
+                    priority: priority
+                };
+                tasks.push(newTask);
+            } else if (modalMode === "edit" && currentTaskIndex !== null) {
+                tasks[currentTaskIndex].priority = priority;
+            }
+            saveTasks();
+            renderTask();
+            hidePriorityModal(); //Close choosing priority window
+        });
+    });
 }
 
 // Task management functions
@@ -90,7 +110,7 @@ function addTask() {
     } else {
         tempText = taskText;
         toDoInput.value = "";
-        showPriorityModal(); //Open choosing priority window
+        showPriorityModal("add"); //Open choosing priority window
     }
 }
 
@@ -120,22 +140,10 @@ function renderTask() {
     });
 }
 
-function showPriorityModal() {
+function showPriorityModal(mode = "add", taskIndex = null) {
+    modalMode = mode;
+    currentTaskIndex = taskIndex;
     document.getElementById("priorityModal").classList.remove("hidden");
-    document.querySelectorAll(".priority-option").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const priority = btn.dataset.priority;
-            const newTask = {
-                text: tempText,
-                completed: false,
-                priority: priority
-            };
-            tasks.push(newTask);
-            saveTasks();
-            renderTask();
-            hidePriorityModal(); //Close choosing priority window
-        });
-    });
 }
 
 function hidePriorityModal() {
@@ -182,15 +190,8 @@ function createButton(text, onClick) {
     return button;
 }
 function editPriority(task) {
-    document.getElementById("priorityModal").classList.remove("hidden");
-    document.querySelectorAll(".priority-option").forEach(btn => {
-        btn.addEventListener("click", () => {
-            task.priority = btn.dataset.priority;
-            saveTasks();
-            renderTask();
-            hidePriorityModal(); //Close choosing priority window
-        });
-    });
+    const index = tasks.indexOf(task);
+    showPriorityModal("edit",index);
 }
 function createPriority(task, li) {
     const priorityText = document.createElement("div");
@@ -226,7 +227,7 @@ function createPriority(task, li) {
         priorityText.style.color = "#1976d2";
         li.style.borderLeftColor = "#1976d2";
     }
-    priorityText.addEventListener("click",(e)=>{
+    priorityText.addEventListener("click", (e) => {
         e.stopPropagation();
         editPriority(task);
     });
