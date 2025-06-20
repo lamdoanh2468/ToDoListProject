@@ -94,20 +94,7 @@ function addTask() {
     }
 }
 
-document.querySelectorAll(".priority-option").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const priority = btn.dataset.priority;
-        const newTask = {
-            text: tempText,
-            completed: false,
-            priority: priority
-        };
-        tasks.push(newTask);
-        saveTasks();
-        renderTask();
-        hidePriorityModal(); //Close choosing priority window
-    });
-});
+
 
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -117,7 +104,11 @@ function renderTask() {
     toDoList.innerHTML = "";
     //Using sorted tasks to sort task by priority
     const sortedTasks = [...tasks].sort((a, b) => {
-        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        const priorityOrder = {
+            high: 0,
+            medium: 1,
+            low: 2
+        };
         return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
     sortedTasks.forEach((task, index) => {
@@ -131,6 +122,20 @@ function renderTask() {
 
 function showPriorityModal() {
     document.getElementById("priorityModal").classList.remove("hidden");
+    document.querySelectorAll(".priority-option").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const priority = btn.dataset.priority;
+            const newTask = {
+                text: tempText,
+                completed: false,
+                priority: priority
+            };
+            tasks.push(newTask);
+            saveTasks();
+            renderTask();
+            hidePriorityModal(); //Close choosing priority window
+        });
+    });
 }
 
 function hidePriorityModal() {
@@ -176,7 +181,17 @@ function createButton(text, onClick) {
     });
     return button;
 }
-
+function editPriority(task) {
+    document.getElementById("priorityModal").classList.remove("hidden");
+    document.querySelectorAll(".priority-option").forEach(btn => {
+        btn.addEventListener("click", () => {
+            task.priority = btn.dataset.priority;
+            saveTasks();
+            renderTask();
+            hidePriorityModal(); //Close choosing priority window
+        });
+    });
+}
 function createPriority(task, li) {
     const priorityText = document.createElement("div");
     priorityText.innerText = task.priority;
@@ -211,7 +226,10 @@ function createPriority(task, li) {
         priorityText.style.color = "#1976d2";
         li.style.borderLeftColor = "#1976d2";
     }
-
+    priorityText.addEventListener("click",(e)=>{
+        e.stopPropagation();
+        editPriority(task);
+    });
     return priorityText;
 }
 
@@ -352,7 +370,3 @@ function setupBackgroundModalEvents() {
         });
     });
 }
-
-
-
-
