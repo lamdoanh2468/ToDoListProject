@@ -7,6 +7,7 @@ const colorPicker = document.getElementById("main-title-color-picker");
 const subColorPicker = document.getElementById("tasks-color-picker");
 const h2Task = document.getElementById("total-task");
 const totalText = h2Task.innerText;
+//Current Time 
 let tempText = "";
 // State variables
 let tasks = [];
@@ -84,15 +85,19 @@ function setupEventListeners() {
     document.querySelectorAll(".priority-option").forEach(btn => {
         btn.addEventListener("click", (e) => {
             const priority = btn.dataset.priority;
+            const deadlineInput = document.getElementById("deadlinePicker");
+            const deadline = deadlineInput.value;
             if (modalMode === "add") {
                 const newTask = {
                     text: tempText,
                     completed: false,
-                    priority: priority
+                    priority: priority,
+                    deadline: deadline
                 };
                 tasks.push(newTask);
             } else if (modalMode === "edit" && currentTaskIndex !== null) {
                 tasks[currentTaskIndex].priority = priority;
+                tasks[currentTaskIndex].deadline = deadline;
             }
             saveTasks();
             renderTask();
@@ -131,7 +136,7 @@ function renderTask() {
         };
         return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
-    sortedTasks.forEach((task, index) => {
+    sortedTasks.forEach((task) => {
         //Create li element        
         const li = createTaskElement(task, tasks.indexOf(task));
         //Add to to-do list
@@ -172,10 +177,12 @@ function createTaskElement(task, index) {
     const delBtn = createButton("Remove", () => openDialog("remove", index));
     const editBtn = createButton("Edit", () => handleEditTask(index, task.text));
     const priorityBtn = createPriority(task, li);
+    const deadline = createDeadline(task, li);
     li.appendChild(span);
     li.appendChild(delBtn);
     li.appendChild(editBtn);
     li.appendChild(priorityBtn);
+    li.appendChild(deadline);
     return li;
 }
 
@@ -191,7 +198,7 @@ function createButton(text, onClick) {
 }
 function editPriority(task) {
     const index = tasks.indexOf(task);
-    showPriorityModal("edit",index);
+    showPriorityModal("edit", index);
 }
 function createPriority(task, li) {
     const priorityText = document.createElement("div");
@@ -233,7 +240,55 @@ function createPriority(task, li) {
     });
     return priorityText;
 }
-
+function updateDeadlineDisplays() {
+    document.querySelectorAll(".deadline-display").forEach((el, i) => {
+        const task = tasks[i];
+        if (task.deadline) {
+            const date = document.getElementById("deadlineDate").value;
+            const time = document.getElementById("deadlineTime").value;
+            const now = new Date(`${date}T${time}`);
+            const deadlineDate = new Date(task.deadline);
+            const diff = deadlineDate - now;
+            let timeText = "";
+            //Calculate time attributes
+            if (diff > 0) {
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                const days = Math.floor(hours / 24);
+                timeText = `⏳ Còn ${days}d ${hours % 24}h ${minutes}m`;
+                el.style.backgroundColor = diff < 3 * 60 * 60 * 1000 ? "#ffe0e0" : "#e0f7fa";
+                el.style.color = diff < 3 * 60 * 60 * 1000 ? "#d32f2f" : "#00796b";
+            } else {
+                const lateBy = Math.abs(diff);
+                const lateHours = Math.floor(lateBy / (1000 * 60 * 60));
+                const lateMinutes = Math.floor((lateBy / (1000 * 60)) % 60);
+                timeText = `⚠️ Trễ ${lateHours}h ${lateMinutes}m`;
+                el.style.backgroundColor = "#ffebee";
+                el.style.color = "#c62828";
+            }
+            el.innerText = timeText;
+        } else {
+            el.innerText = "⏰ No deadline";
+        }
+    });
+}
+setInterval(updateDeadlineDisplays, 60000);
+function createDeadline(task) {
+    const deadlineDiv = document.createElement("div");
+    deadlineDiv.classList.add("deadline-display");
+    deadlineDiv.innerText = "⏰ Đang tải deadline...";
+    //Style
+    deadlineDiv.style.margin = "0 10px";
+    deadlineDiv.style.padding = "4px 12px";
+    deadlineDiv.style.borderRadius = "20px";
+    deadlineDiv.style.fontWeight = "600";
+    deadlineDiv.style.fontSize = "0.9em";
+    deadlineDiv.style.textTransform = "capitalize";
+    deadlineDiv.style.display = "inline-block";
+    deadlineDiv.style.minWidth = "80px";
+    deadlineDiv.style.textAlign = "center";
+    return deadlineDiv;
+}
 // Event handlers
 function handleTitleEdit() {
     const editTitle = prompt("What title do you want to?");
