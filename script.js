@@ -88,8 +88,9 @@ function setupEventListeners() {
             const dateInput = document.getElementById("deadlineDate");
             const timeInput = document.getElementById("deadlineTime");
             //Prevent user to choose previous day for now
+            const deadlineTime = new Date(`${dateInput.value}T${timeInput.value}`);
             const now = new Date();
-            if (now.getDate() > dateInput.value || now.getTime() > timeInput.value) {
+            if (now > deadlineTime) {
                 alert("Can't create deadline from past");
                 return;
             }
@@ -98,13 +99,26 @@ function setupEventListeners() {
                 deadline = `${dateInput.value}T${timeInput.value}`;
             }
             if (modalMode === "add") {
-                const newTask = {
-                    text: tempText,
-                    completed: false,
-                    priority: priority,
-                    deadline: deadline
-                };
-                tasks.push(newTask);
+                if (!dateInput.value && !timeInput.value) {
+                    const isChooseNoDL = confirm("You didn't choose time and date.Would you mind to choose no deadline in your task?");
+                    if (isChooseNoDL) {
+                        const newTask = {
+                            text: tempText,
+                            completed: false,
+                            priority: priority,
+                            deadline: null
+                        };
+                        tasks.push(newTask);
+                    } else {
+                        const newTask = {
+                            text: tempText,
+                            completed: false,
+                            priority: priority,
+                            deadline: deadline
+                        };
+                        tasks.push(newTask);
+                    }
+                }
             } else if (modalMode === "edit" && currentTaskIndex !== null) {
                 tasks[currentTaskIndex].priority = priority;
                 tasks[currentTaskIndex].deadline = deadline;
