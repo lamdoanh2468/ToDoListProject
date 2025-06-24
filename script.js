@@ -85,8 +85,18 @@ function setupEventListeners() {
     document.querySelectorAll(".priority-option").forEach(btn => {
         btn.addEventListener("click", (e) => {
             const priority = btn.dataset.priority;
-            const deadlineInput = document.getElementById("deadlinePicker");
-            const deadline = deadlineInput.value;
+            const dateInput = document.getElementById("deadlineDate");
+            const timeInput = document.getElementById("deadlineTime");
+            //Prevent user to choose previous day for now
+            const now = new Date();
+            if (now.getDate() > dateInput.value || now.getTime() > timeInput.value) {
+                alert("Can't create deadline from past");
+                return;
+            }
+            let deadline = "";
+            if (dateInput && timeInput && dateInput.value && timeInput.value) {
+                deadline = `${dateInput.value}T${timeInput.value}`;
+            }
             if (modalMode === "add") {
                 const newTask = {
                     text: tempText,
@@ -196,10 +206,12 @@ function createButton(text, onClick) {
     });
     return button;
 }
+
 function editPriority(task) {
     const index = tasks.indexOf(task);
     showPriorityModal("edit", index);
 }
+
 function createPriority(task, li) {
     const priorityText = document.createElement("div");
     priorityText.innerText = task.priority;
@@ -240,6 +252,7 @@ function createPriority(task, li) {
     });
     return priorityText;
 }
+
 function updateDeadlineDisplays() {
     document.querySelectorAll(".deadline-display").forEach((el, i) => {
         const task = tasks[i];
@@ -273,6 +286,7 @@ function updateDeadlineDisplays() {
     });
 }
 setInterval(updateDeadlineDisplays, 60000);
+
 function createDeadline(task) {
     const deadlineDiv = document.createElement("div");
     deadlineDiv.classList.add("deadline-display");
