@@ -16,11 +16,14 @@ var mainTitle = document.getElementById("main-title");
 var colorPicker = document.getElementById("main-title-color-picker");
 var subColorPicker = document.getElementById("tasks-color-picker");
 var h2Task = document.getElementById("total-task");
-var totalText = h2Task.innerText;
+var totalText = h2Task.innerText; //Current Time 
+
 var tempText = ""; // State variables
 
 var tasks = [];
-var countTask = 0; // Initialize application when window loads
+var countTask = 0;
+var currentTaskIndex = null;
+var modalMode = "add"; // Initialize application when window loads
 
 window.addEventListener('load', initializeApp);
 
@@ -87,7 +90,61 @@ function setupEventListeners() {
 
   if (closeModalBtn) {
     closeModalBtn.addEventListener("click", hidePriorityModal);
-  }
+  } //Choose priority options each task
+
+
+  document.querySelectorAll(".priority-option").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      var priority = btn.dataset.priority;
+      var dateInput = document.getElementById("deadlineDate");
+      var timeInput = document.getElementById("deadlineTime"); //Prevent user to choose previous day for now
+
+      var deadlineTime = new Date("".concat(dateInput.value, "T").concat(timeInput.value));
+      var now = new Date();
+
+      if (now > deadlineTime) {
+        alert("Can't create deadline from past");
+        return;
+      }
+
+      var deadline = "";
+
+      if (dateInput && timeInput && dateInput.value && timeInput.value) {
+        deadline = "".concat(dateInput.value, "T").concat(timeInput.value);
+      }
+
+      if (modalMode === "add") {
+        if (!dateInput.value && !timeInput.value) {
+          var isChooseNoDL = confirm("You didn't choose time and date.Would you mind to choose no deadline in your task?");
+
+          if (isChooseNoDL) {
+            var newTask = {
+              text: tempText,
+              completed: false,
+              priority: priority,
+              deadline: null
+            };
+            tasks.push(newTask);
+          } else {
+            var _newTask = {
+              text: tempText,
+              completed: false,
+              priority: priority,
+              deadline: deadline
+            };
+            tasks.push(_newTask);
+          }
+        }
+      } else if (modalMode === "edit" && currentTaskIndex !== null) {
+        tasks[currentTaskIndex].priority = priority;
+        tasks[currentTaskIndex].deadline = deadline;
+      }
+
+      saveTasks();
+      renderTask();
+      hidePriorityModal(); //Close choosing priority window
+    });
+  });
 } // Task management functions
 
 
@@ -100,7 +157,7 @@ function addTask() {
   } else {
     tempText = taskText;
     toDoInput.value = "";
-    showPriorityModal(); //Open choosing priority window
+    showPriorityModal("add"); //Open choosing priority window
   }
 }
 
@@ -120,7 +177,7 @@ function renderTask() {
     return priorityOrder[a.priority] - priorityOrder[b.priority];
   });
 
-  sortedTasks.forEach(function (task, index) {
+  sortedTasks.forEach(function (task) {
     //Create li element        
     var li = createTaskElement(task, tasks.indexOf(task)); //Add to to-do list
 
@@ -130,21 +187,11 @@ function renderTask() {
 }
 
 function showPriorityModal() {
+  var mode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "add";
+  var taskIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  modalMode = mode;
+  currentTaskIndex = taskIndex;
   document.getElementById("priorityModal").classList.remove("hidden");
-  document.querySelectorAll(".priority-option").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var priority = btn.dataset.priority;
-      var newTask = {
-        text: tempText,
-        completed: false,
-        priority: priority
-      };
-      tasks.push(newTask);
-      saveTasks();
-      renderTask();
-      hidePriorityModal(); //Close choosing priority window
-    });
-  });
 }
 
 function hidePriorityModal() {
@@ -175,10 +222,12 @@ function createTaskElement(task, index) {
     return handleEditTask(index, task.text);
   });
   var priorityBtn = createPriority(task, li);
+  var deadline = createDeadline(task, li);
   li.appendChild(span);
   li.appendChild(delBtn);
   li.appendChild(editBtn);
   li.appendChild(priorityBtn);
+  li.appendChild(deadline);
   return li;
 }
 
@@ -194,15 +243,8 @@ function createButton(text, onClick) {
 }
 
 function editPriority(task) {
-  document.getElementById("priorityModal").classList.remove("hidden");
-  document.querySelectorAll(".priority-option").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      task.priority = btn.dataset.priority;
-      saveTasks();
-      renderTask();
-      hidePriorityModal(); //Close choosing priority window
-    });
-  });
+  var index = tasks.indexOf(task);
+  showPriorityModal("edit", index);
 }
 
 function createPriority(task, li) {
@@ -242,6 +284,60 @@ function createPriority(task, li) {
     editPriority(task);
   });
   return priorityText;
+}
+
+function updateDeadlineDisplays() {
+  document.querySelectorAll(".deadline-display").forEach(function (el, i) {
+    var task = tasks[i];
+
+    if (task.deadline) {
+      var date = document.getElementById("deadlineDate").value;
+      var time = document.getElementById("deadlineTime").value;
+      var now = new Date("".concat(date, "T").concat(time));
+      var deadlineDate = new Date(task.deadline);
+      var diff = deadlineDate - now;
+      var timeText = ""; //Calculate time attributes
+
+      if (diff > 0) {
+        var hours = Math.floor(diff / (1000 * 60 * 60));
+        var minutes = Math.floor(diff / (1000 * 60) % 60);
+        var days = Math.floor(hours / 24);
+        timeText = "\u23F3 C\xF2n ".concat(days, "d ").concat(hours % 24, "h ").concat(minutes, "m");
+        el.style.backgroundColor = diff < 3 * 60 * 60 * 1000 ? "#ffe0e0" : "#e0f7fa";
+        el.style.color = diff < 3 * 60 * 60 * 1000 ? "#d32f2f" : "#00796b";
+      } else {
+        var lateBy = Math.abs(diff);
+        var lateHours = Math.floor(lateBy / (1000 * 60 * 60));
+        var lateMinutes = Math.floor(lateBy / (1000 * 60) % 60);
+        timeText = "\u26A0\uFE0F Tr\u1EC5 ".concat(lateHours, "h ").concat(lateMinutes, "m");
+        el.style.backgroundColor = "#ffebee";
+        el.style.color = "#c62828";
+      }
+
+      el.innerText = timeText;
+    } else {
+      el.innerText = "⏰ No deadline";
+    }
+  });
+}
+
+setInterval(updateDeadlineDisplays, 60000);
+
+function createDeadline(task) {
+  var deadlineDiv = document.createElement("div");
+  deadlineDiv.classList.add("deadline-display");
+  deadlineDiv.innerText = "⏰ Đang tải deadline..."; //Style
+
+  deadlineDiv.style.margin = "0 10px";
+  deadlineDiv.style.padding = "4px 12px";
+  deadlineDiv.style.borderRadius = "20px";
+  deadlineDiv.style.fontWeight = "600";
+  deadlineDiv.style.fontSize = "0.9em";
+  deadlineDiv.style.textTransform = "capitalize";
+  deadlineDiv.style.display = "inline-block";
+  deadlineDiv.style.minWidth = "80px";
+  deadlineDiv.style.textAlign = "center";
+  return deadlineDiv;
 } // Event handlers
 
 

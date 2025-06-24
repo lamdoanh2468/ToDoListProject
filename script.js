@@ -83,7 +83,26 @@ function setupEventListeners() {
     }
     //Choose priority options each task
     document.querySelectorAll(".priority-option").forEach(btn => {
-        btn.addEventListener("click", handlePriorityClick);
+        btn.addEventListener("click", (e) => {
+            const priority = btn.dataset.priority;
+            const deadlineInput = document.getElementById("deadlinePicker");
+            const deadline = deadlineInput.value;
+            if (modalMode === "add") {
+                const newTask = {
+                    text: tempText,
+                    completed: false,
+                    priority: priority,
+                    deadline: deadline
+                };
+                tasks.push(newTask);
+            } else if (modalMode === "edit" && currentTaskIndex !== null) {
+                tasks[currentTaskIndex].priority = priority;
+                tasks[currentTaskIndex].deadline = deadline;
+            }
+            saveTasks();
+            renderTask();
+            hidePriorityModal(); //Close choosing priority window
+        });
     });
 }
 
@@ -197,10 +216,12 @@ function createButton(text, onClick) {
     });
     return button;
 }
+
 function editPriority(task) {
     const index = tasks.indexOf(task);
     showPriorityModal("edit", index);
 }
+
 function createPriority(task, li) {
     const priorityText = document.createElement("div");
     priorityText.innerText = task.priority;
@@ -241,20 +262,9 @@ function createPriority(task, li) {
     });
     return priorityText;
 }
-function createDeadline(task) {
-    const deadlineDiv = document.createElement("div");
-    deadlineDiv.classList.add("deadline-display");
-    //Style
-    deadlineDiv.style.margin = "0 10px";
-    deadlineDiv.style.padding = "4px 12px";
-    deadlineDiv.style.borderRadius = "20px";
-    deadlineDiv.style.fontWeight = "600";
-    deadlineDiv.style.fontSize = "0.9em";
-    deadlineDiv.style.textTransform = "capitalize";
-    deadlineDiv.style.display = "inline-block";
-    deadlineDiv.style.minWidth = "80px";
-    deadlineDiv.style.textAlign = "center";
-    const update = () => {
+function updateDeadlineDisplays() {
+    document.querySelectorAll(".deadline-display").forEach((el, i) => {
+        const task = tasks[i];
         if (task.deadline) {
             const now = new Date();
             const deadlineDate = new Date(task.deadline);
@@ -278,10 +288,25 @@ function createDeadline(task) {
             }
             deadlineDiv.innerText = timeText;
         } else {
-            deadlineDiv.innerText = "⏰ No deadline";
+            el.innerText = "⏰ No deadline";
         }
-    };
-    update();
+    });
+}
+setInterval(updateDeadlineDisplays, 60000);
+function createDeadline(task) {
+    const deadlineDiv = document.createElement("div");
+    deadlineDiv.classList.add("deadline-display");
+    deadlineDiv.innerText = "⏰ Đang tải deadline...";
+    //Style
+    deadlineDiv.style.margin = "0 10px";
+    deadlineDiv.style.padding = "4px 12px";
+    deadlineDiv.style.borderRadius = "20px";
+    deadlineDiv.style.fontWeight = "600";
+    deadlineDiv.style.fontSize = "0.9em";
+    deadlineDiv.style.textTransform = "capitalize";
+    deadlineDiv.style.display = "inline-block";
+    deadlineDiv.style.minWidth = "80px";
+    deadlineDiv.style.textAlign = "center";
     return deadlineDiv;
 }
 // Event handlers
