@@ -94,47 +94,40 @@ function setupEventListeners() {
 
 
   document.querySelectorAll(".priority-option").forEach(function (btn) {
-    btn.addEventListener("click", function (e) {
+    btn.addEventListener("click", function () {
       var priority = btn.dataset.priority;
       var dateInput = document.getElementById("deadlineDate");
-      var timeInput = document.getElementById("deadlineTime"); //Prevent user to choose previous day for now
-
-      var deadlineTime = new Date("".concat(dateInput.value, "T").concat(timeInput.value));
-      var now = new Date();
-
-      if (now > deadlineTime) {
-        alert("Can't create deadline from past");
-        return;
-      }
-
+      var timeInput = document.getElementById("deadlineTime");
       var deadline = "";
 
+      if (!dateInput.value || !timeInput.value) {
+        var isChooseNoDL = confirm("You didn't choose time or date.Would you mind to choose no deadline in your task?");
+
+        if (!isChooseNoDL) {
+          return;
+        }
+      }
+
       if (dateInput && timeInput && dateInput.value && timeInput.value) {
-        deadline = "".concat(dateInput.value, "T").concat(timeInput.value);
+        deadline = "".concat(dateInput.value, "T").concat(timeInput.value); //Prevent user to choose previous day for now
+
+        var deadlineTime = new Date("".concat(dateInput.value, "T").concat(timeInput.value));
+        var now = new Date();
+
+        if (now > deadlineTime) {
+          alert("Can't create deadline from past");
+          return;
+        }
       }
 
       if (modalMode === "add") {
-        if (!dateInput.value && !timeInput.value) {
-          var isChooseNoDL = confirm("You didn't choose time and date.Would you mind to choose no deadline in your task?");
-
-          if (isChooseNoDL) {
-            var newTask = {
-              text: tempText,
-              completed: false,
-              priority: priority,
-              deadline: null
-            };
-            tasks.push(newTask);
-          } else {
-            var _newTask = {
-              text: tempText,
-              completed: false,
-              priority: priority,
-              deadline: deadline
-            };
-            tasks.push(_newTask);
-          }
-        }
+        var newTask = {
+          text: tempText,
+          completed: false,
+          priority: priority,
+          deadline: deadline
+        };
+        tasks.push(newTask);
       } else if (modalMode === "edit" && currentTaskIndex !== null) {
         tasks[currentTaskIndex].priority = priority;
         tasks[currentTaskIndex].deadline = deadline;
@@ -222,7 +215,7 @@ function createTaskElement(task, index) {
     return handleEditTask(index, task.text);
   });
   var priorityBtn = createPriority(task, li);
-  var deadline = createDeadline(task, li);
+  var deadline = createDeadline();
   li.appendChild(span);
   li.appendChild(delBtn);
   li.appendChild(editBtn);
@@ -321,9 +314,9 @@ function updateDeadlineDisplays() {
   });
 }
 
-setInterval(updateDeadlineDisplays, 60000);
+setInterval(updateDeadlineDisplays, 6000);
 
-function createDeadline(task) {
+function createDeadline() {
   var deadlineDiv = document.createElement("div");
   deadlineDiv.classList.add("deadline-display");
   deadlineDiv.innerText = "⏰ Đang tải deadline..."; //Style
