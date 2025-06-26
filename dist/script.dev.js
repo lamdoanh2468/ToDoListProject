@@ -121,6 +121,8 @@ function setupEventListeners() {
       }
 
       if (modalMode === "add") {
+        dateInput.value = "";
+        timeInput.value = "";
         var newTask = {
           text: tempText,
           completed: false,
@@ -284,9 +286,7 @@ function updateDeadlineDisplays() {
     var task = tasks[i];
 
     if (task.deadline) {
-      var date = document.getElementById("deadlineDate").value;
-      var time = document.getElementById("deadlineTime").value;
-      var now = new Date("".concat(date, "T").concat(time));
+      var now = new Date();
       var deadlineDate = new Date(task.deadline);
       var diff = deadlineDate - now;
       var timeText = ""; //Calculate time attributes

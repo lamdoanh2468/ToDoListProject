@@ -105,6 +105,8 @@ function setupEventListeners() {
                 }
             }
             if (modalMode === "add") {
+                dateInput.value = "";
+                timeInput.value = "";
                 const newTask = {
                     text: tempText,
                     completed: false,
@@ -264,9 +266,7 @@ function updateDeadlineDisplays() {
     document.querySelectorAll(".deadline-display").forEach((el, i) => {
         const task = tasks[i];
         if (task.deadline) {
-            const date = document.getElementById("deadlineDate").value;
-            const time = document.getElementById("deadlineTime").value;
-            const now = new Date(`${date}T${time}`);
+            const now = new Date();
             const deadlineDate = new Date(task.deadline);
             const diff = deadlineDate - now;
             let timeText = "";

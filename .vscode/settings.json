@@ -1,9 +1,6 @@
 
 {
-"editor.fontFamily": "Consolas",
-
-// Controls the font size.
-"editor.fontSize": 13,
+    "editor.fontSize": 13,
 "liveServer.settings.port": 5503,
 "compile-hero.disable-compile-files-on-did-save-code": false
 }
