@@ -2,109 +2,109 @@
 readme_content = """
 # 📝 To-Do List Web App
 
-Một ứng dụng web đơn giản nhưng tinh tế giúp bạn **quản lý công việc**, sắp xếp thời gian, và không bỏ lỡ bất kỳ deadline nào.
+A simple yet elegant web app that helps you **manage your tasks**, organize your time, and never miss a deadline.
 
-> "Không có task nào là không thể hoàn thành – chỉ là bạn chưa viết nó vào đây mà thôi!" 💡
+> "There is no task that cannot be completed – you just haven't written it down yet!" 💡
 
 ---
 
 ## 🚀 Demo
 
-👉 [Xem bản chạy trực tiếp tại đây (Vercel link)](https://your-vercel-deploy-url.vercel.app) *(thay bằng link thật)*
+👉 [See the live version here (Vercel link)](https://your-vercel-deploy-url.vercel.app) *(replace with the real link)*
 
 ---
 
-## 🛠 Tính năng nổi bật
+## 🛠 Highlights
 
-✅ Thêm/sửa/xoá công việc  
-✅ Gán độ ưu tiên: `Cao`, `Vừa`, `Thấp`  
-✅ Cài deadline (ngày + giờ)  
-✅ Giao diện tự động đếm ngược thời gian còn lại  
-✅ Cảnh báo khi deadline sắp đến hoặc quá hạn  
-✅ Tùy chỉnh màu tiêu đề + chọn hình nền cực chill  
-✅ Lưu trữ local (LocalStorage), không mất dữ liệu khi tải lại  
-✅ Giao diện responsive, đẹp mê hồn 😍
+✅ Add/edit/delete tasks
+✅ Assign priority: `High`, `Medium`, `Low`
+✅ Set deadline (date + time)
+✅ Automatic countdown interface
+✅ Warning when deadline is approaching or overdue
+✅ Customize title color + choose extremely chill background image
+✅ Local storage (LocalStorage), no data loss when reloading
+✅ Responsive interface, beautiful 😍
 
 ---
 
-## 🧑‍💻 Công nghệ sử dụng
+## 🧑‍💻 Technology used
 
-| Công nghệ | Vai trò |
+| Technology | Role |
 |----------|---------|
-| HTML5 | Giao diện khung |
-| CSS3 | Thiết kế giao diện, hiệu ứng |
-| JavaScript | Logic xử lý, tương tác người dùng |
-| LocalStorage | Lưu dữ liệu cục bộ |
-| Vercel | Deploy ứng dụng web |
+| HTML5 | Frame interface |
+| CSS3 | Interface design, effects |
+| JavaScript | Processing logic, user interaction |
+| LocalStorage | Local data storage |
+| Vercel | Deploy web application |
 
 ---
 
-## 🗂️ Cấu trúc dự án
+## 🗂️ Project structure
 
 TODOLIST/
 ├── client/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
-├── server/           # (Nếu có backend sau này)
-│   ├── controllers/
-│   ├── models/
-│   └── routes/
-├── dist/             # (Tùy chọn: build output)
+│ ├── index.html
+│ ├── style.css
+│ └── script.js
+├── server/ # (If there is a backend later)
+│ ├── controllers/
+│ ├── models/
+│ └── routes/
+├── dist/ # (Optional: build output)
 └── README.md
 
 ---
 
-## 🔧 Cách chạy dự án
+## 🔧 How to run the project
 
-1. **Clone project** về máy:
+1. **Clone project** to your computer:
 
 git clone https://github.com/your-username/todolist.git
 cd todolist/client
 
-2. **Mở file HTML**:
+2. **Open HTML file**:
 
-- Chạy bằng VSCode + Live Server extension
-- Hoặc mở `index.html` bằng bất kỳ trình duyệt nào
+- Run with VSCode + Live Server extension
+- Or open `index.html` with any browser
 
 ---
 
-## 🌐 Cách deploy lên Vercel
+## 🌐 How to deploy to Vercel
 
-> Nếu bạn dùng thư mục `client/`, nhớ set `Root Directory` = `client`
+> If you use the `client/` folder, remember to set `Root Directory` = `client`
 
-1. Tạo tài khoản tại [vercel.com](https://vercel.com)
+1. Create an account at [vercel.com](https://vercel.com)
 2. Import GitHub repo
-3. Vào Project Settings → General → Root Directory → `client`
-4. Bấm “Deploy” và thưởng thức thành quả ✨
+3. Go to Project Settings → General → Root Directory → `client`
+4. Click “Deploy” and enjoy the results ✨
 
 ---
 
-## 🎯 Định hướng tương lai
+## 🎯 Future direction
 
-- [ ] Đồng bộ hoá với Firebase / Supabase  
-- [ ] Tính năng nhắc nhở bằng thông báo đẩy  
-- [ ] Giao diện kéo-thả (drag & drop)  
-- [ ] Thống kê task đã hoàn thành bằng biểu đồ  
-- [ ] Chế độ Dark Mode 🌓  
-- [ ] PWA (cài như app di động)  
+- [ ] Sync with Firebase / Supabase
+- [ ] Reminder feature with push notifications
+- [ ] Drag & drop interface
+- [ ] Completed task statistics with chart
+- [ ] Dark Mode 🌓
+- [ ] PWA (install as mobile app)
 
 ---
 
-## 📜 Giấy phép
+## 📜 License
 
 MIT License © [Your Name]
 
 ---
 
-## 🫶 Đóng góp
+## 🫶 Contribute
 
-Bạn có ý tưởng gì thú vị? Gửi PR hoặc tạo Issue nhé! Mình luôn hoan nghênh mọi đóng góp 💥
+Do you have an interesting idea? Submit PR or create Issue ok! I always welcome any contributions 💥
 """
 
 file_path = "/mnt/data/README_TODO.txt"
 
 with open(file_path, "w", encoding="utf-8") as f:
-    f.write(readme_content)
+f.write(readme_content)
 
 file_path
