@@ -87,6 +87,7 @@ function setupEventListeners() {
             const priority = btn.dataset.priority;
             const dateInput = document.getElementById("deadlineDate");
             const timeInput = document.getElementById("deadlineTime");
+            const tagInput = document.getElementById("tagsTask");
             let deadline = "";
             if (!dateInput.value || !timeInput.value) {
                 const isChooseNoDL = confirm("You didn't choose time or date.Would you mind to choose no deadline in your task?");
@@ -107,10 +108,12 @@ function setupEventListeners() {
             if (modalMode === "add") {
                 dateInput.value = "";
                 timeInput.value = "";
+                const rawTags = tagInput.value.match(/#\w+/g);
                 const newTask = {
                     text: tempText,
                     completed: false,
                     priority: priority,
+                    tags: rawTags ? rawTags.map(tag => tag.replace('#', '')) : [],
                     deadline: deadline
                 };
                 tasks.push(newTask);
@@ -184,7 +187,22 @@ function createTaskElement(task, index) {
     const span = document.createElement("span");
     span.textContent = task.text;
     span.classList.add(task.completed ? "completed" : "to-do");
-
+    const tags = document.createElement("span");
+    tags.classList.add("task-tags");
+    if (Array.isArray(task.tags)) {
+        task.tags.forEach(tag => {
+            const tagSpan = document.createElement("span");
+            tagSpan.innerText = `#${tag}`;
+            tagSpan.style.backgroundColor = "#f0f0f0";
+            tagSpan.style.color = "#333";
+            tagSpan.style.borderRadius = "12px";
+            tagSpan.style.padding = "2px 8px";
+            tagSpan.style.margin = "2px";
+            tagSpan.style.fontSize = "0.8em";
+            tagSpan.style.display = "inline-block";
+            tags.appendChild(tagSpan);
+        })
+    }
     // Task completion event
     li.addEventListener("click", () => {
         tasks[index].completed = !tasks[index].completed;
@@ -202,6 +220,7 @@ function createTaskElement(task, index) {
     li.appendChild(editBtn);
     li.appendChild(priorityBtn);
     li.appendChild(deadline);
+    li.appendChild(tags);
     return li;
 }
 
