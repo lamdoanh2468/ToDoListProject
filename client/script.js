@@ -85,6 +85,7 @@ function setupEventListeners() {
     document.querySelectorAll(".priority-option").forEach(btn => {
         btn.addEventListener("click", () => {
             const priority = btn.dataset.priority;
+            const tagsInput = document.getElementById("tagsTask");
             const dateInput = document.getElementById("deadlineDate");
             const timeInput = document.getElementById("deadlineTime");
             let deadline = "";
@@ -111,6 +112,7 @@ function setupEventListeners() {
                     text: tempText,
                     completed: false,
                     priority: priority,
+                    tags: tagsInput.value.match(/#\w+/g)?.map(tag => tag.replace('#', '')) || [],
                     deadline: deadline
                 };
                 tasks.push(newTask);
@@ -184,7 +186,22 @@ function createTaskElement(task, index) {
     const span = document.createElement("span");
     span.textContent = task.text;
     span.classList.add(task.completed ? "completed" : "to-do");
-
+    const tags = document.createElement("div");
+    tags.classList.add("task-tags");
+    if (Array.isArray(task.tags)) {
+        task.tags.forEach(tag => {
+            const tagSpan = document.createElement("span");
+            tagSpan.innerText = `#${tag}`;
+            tagSpan.style.backgroundColor = "#f0f0f0";
+            tagSpan.style.color = "#333";
+            tagSpan.style.borderRadius = "12px";
+            tagSpan.style.padding = "2px 8px";
+            tagSpan.style.margin = "2px";
+            tagSpan.style.fontSize = "0.8em";
+            tagSpan.style.display = "inline-block";
+            tags.appendChild(tagSpan);
+        });
+    }
     // Task completion event
     li.addEventListener("click", () => {
         tasks[index].completed = !tasks[index].completed;
@@ -202,6 +219,7 @@ function createTaskElement(task, index) {
     li.appendChild(editBtn);
     li.appendChild(priorityBtn);
     li.appendChild(deadline);
+    li.appendChild(tags);
     return li;
 }
 
