@@ -36,61 +36,59 @@
         <img src="https://images.pexels.com/photos/457881/pexels-photo-457881.jpeg?auto=compress&cs=tinysrgb&w=600" data-url="https://images.pexels.com/photos/457881/pexels-photo-457881.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Picture 3" />
         <img src="https://www.pixelstalk.net/wp-content/uploads/2025/05/Apple-Desktop-Wallpaper-high-resolution-MacBook-Pro-theme-with-subtle-Apple-branding-620x349.webp" data-url="https://www.pixelstalk.net/wp-content/uploads/2025/05/Apple-Desktop-Wallpaper-high-resolution-MacBook-Pro-theme-with-subtle-Apple-branding-620x349.webp" alt="Apple Desktop Wallpaper" />
 
-      </div>
-    </div>
-    <button id="closeModal" class="close-btn">Close</button>
-  </div>
-  <!-- Choose priority modal -->
-  <div id="priorityModal" class="modal hidden">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3>Select Priority</h3>
-        <button class="close-modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="priority-options">
-          <button class="priority-option" data-priority="high">High</button>
-          <button class="priority-option" data-priority="medium">Medium</button>
-          <button class="priority-option" data-priority="low">Low</button>
-          <label>Tags:</label>
-          <input type="text" id="tagsTask" />
-          <label>Ngày:</label>
-          <input type="date" id="deadlineDate" />
-          <label>Giờ:</label>
-          <input type="time" id="deadlineTime" />
+            </div>
         </div>
-      </div>
+        <button id="closeModal" class="close-btn">Close</button>
     </div>
-  </div>
-  <!-- Remove Task -->
-  <div id="removeModal" class="modal hidden">
-    <div class="remove-modal-dialog">
-      <div class="modal-header">
-        <h3>Do you want to remove this task ?</h3>
-      </div>
-      <div class="modal-body">
-        <div class="options">
-          <button id="yes-option" name="yes">Yes</button>
-          <button id="no-option" name="no">No</button>
+    <!-- Choose priority modal -->
+    <div id="priorityModal" class="modal hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Select Priority</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="priority-options">
+                    <button class="priority-option" data-priority="high">High</button>
+                    <button class="priority-option" data-priority="medium">Medium</button>
+                    <button class="priority-option" data-priority="low">Low</button>
+                    <label>Ngày:</label>
+                    <input type="date" id="deadlineDate" />
+                    <label>Giờ:</label>
+                    <input type="time" id="deadlineTime" />
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <!-- Edit Modal -->
-  <div id="editModal" class="hidden">
-    <div class="edit-modal-content">
-      <div class="edit-modal-header">
-        <h3>Edit Task</h3>
-      </div>
-      <input type="text" id="editInput" placeholder="Edit your task...">
-      <div class="edit-modal-buttons">
-        <button id="cancelEdit">Cancel</button>
-        <button id="saveEdit">Save Changes</button>
-      </div>
+    <!-- Remove Task -->
+    <div id="removeModal" class="modal hidden">
+        <div class="remove-modal-dialog">
+            <div class="modal-header">
+                <h3>Do you want to remove this task ?</h3>
+            </div>
+            <div class="modal-body">
+                <div class="options">
+                    <button id="yes-option" name="yes">Yes</button>
+                    <button id="no-option" name="no">No</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- End Edit Modal -->
-  <script src="script.js"></script>
+    <!-- Edit Modal -->
+    <div id="editModal" class="hidden">
+        <div class="edit-modal-content">
+            <div class="edit-modal-header">
+                <h3>Edit Task</h3>
+            </div>
+            <input type="text" id="editInput" placeholder="Edit your task...">
+            <div class="edit-modal-buttons">
+                <button id="cancelEdit">Cancel</button>
+                <button id="saveEdit">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <!-- End Edit Modal -->
+    <script src="script.js"></script>
 </body>
 
 </html>

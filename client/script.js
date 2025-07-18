@@ -85,9 +85,9 @@ function setupEventListeners() {
     document.querySelectorAll(".priority-option").forEach(btn => {
         btn.addEventListener("click", () => {
             const priority = btn.dataset.priority;
+            const tagsInput = document.getElementById("tagsTask");
             const dateInput = document.getElementById("deadlineDate");
             const timeInput = document.getElementById("deadlineTime");
-            const tagInput = document.getElementById("tagsTask");
             let deadline = "";
             if (!dateInput.value || !timeInput.value) {
                 const isChooseNoDL = confirm("You didn't choose time or date.Would you mind to choose no deadline in your task?");
@@ -108,12 +108,11 @@ function setupEventListeners() {
             if (modalMode === "add") {
                 dateInput.value = "";
                 timeInput.value = "";
-                const rawTags = tagInput.value.match(/#\w+/g);
                 const newTask = {
                     text: tempText,
                     completed: false,
                     priority: priority,
-                    tags: rawTags ? rawTags.map(tag => tag.replace('#', '')) : [],
+                    tags: tagsInput.value.match(/#\w+/g)?.map(tag => tag.replace('#', '')) || [],
                     deadline: deadline
                 };
                 tasks.push(newTask);
@@ -187,7 +186,7 @@ function createTaskElement(task, index) {
     const span = document.createElement("span");
     span.textContent = task.text;
     span.classList.add(task.completed ? "completed" : "to-do");
-    const tags = document.createElement("span");
+    const tags = document.createElement("div");
     tags.classList.add("task-tags");
     if (Array.isArray(task.tags)) {
         task.tags.forEach(tag => {
@@ -201,7 +200,7 @@ function createTaskElement(task, index) {
             tagSpan.style.fontSize = "0.8em";
             tagSpan.style.display = "inline-block";
             tags.appendChild(tagSpan);
-        })
+        });
     }
     // Task completion event
     li.addEventListener("click", () => {
