@@ -15,13 +15,36 @@ let countTask = 0;
 let currentTaskIndex = null;
 let modalMode = "add";
 // Initialize application when window loads
-window.addEventListener('load', initializeApp);
-
-function initializeApp() {
-    loadStorage();
+window.addEventListener('load', async () => {
+    await fetchTasksFromServer();
     setupEventListeners();
-}
+});
+async function fetchTasksFromServer() {
+    try {
+        const res = await fetch("http://localhost:4567/api/tasks");
+        const {
+            success,
+            data
+        } = await res.json();
+        if (success) {
+            tasks = data.map(item => ({
+                text: item.title,
+                completed: item.completed,
+                priority: item.priority_name,
+                deadline: item.deadline,
+                tags: item.tags
+            }))
+        } else {
+            console.error("Server returns error:", data);
+        }
+    } catch (error) {
+        console.error("Cannot fetch tasks:", error);
 
+    }
+
+
+
+}
 // Load data from localStorage
 function loadStorage() {
     const savedTasks = localStorage.getItem("tasks");
@@ -108,11 +131,12 @@ function setupEventListeners() {
             if (modalMode === "add") {
                 dateInput.value = "";
                 timeInput.value = "";
+                const tagsConverted = tagsInput.value.match(/#\w+/g);
                 const newTask = {
                     text: tempText,
                     completed: false,
                     priority: priority,
-                    tags: tagsInput.value.match(/#\w+/g)?.map(tag => tag.replace('#', '')) || [],
+                    tags: tagsConverted ? tagsConverted.map(tag => tag.replace('#', '')) : [],
                     deadline: deadline
                 };
                 tasks.push(newTask);

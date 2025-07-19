@@ -25,11 +25,74 @@ var countTask = 0;
 var currentTaskIndex = null;
 var modalMode = "add"; // Initialize application when window loads
 
-window.addEventListener('load', initializeApp);
+window.addEventListener('load', function _callee() {
+  return regeneratorRuntime.async(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return regeneratorRuntime.awrap(fetchTasksFromServer());
 
-function initializeApp() {
-  loadStorage();
-  setupEventListeners();
+        case 2:
+          setupEventListeners();
+
+        case 3:
+        case "end":
+          return _context.stop();
+      }
+    }
+  });
+});
+
+function fetchTasksFromServer() {
+  var res, _ref, success, data;
+
+  return regeneratorRuntime.async(function fetchTasksFromServer$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.prev = 0;
+          _context2.next = 3;
+          return regeneratorRuntime.awrap(fetch("http://localhost:4567/api/tasks"));
+
+        case 3:
+          res = _context2.sent;
+          _context2.next = 6;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 6:
+          _ref = _context2.sent;
+          success = _ref.success;
+          data = _ref.data;
+
+          if (success) {
+            tasks = data.map(function (item) {
+              return {
+                text: item.title,
+                completed: item.completed,
+                priority: item.priority_name,
+                deadline: item.deadline,
+                tags: item.tags
+              };
+            });
+          } else {
+            console.error("Server returns error:", data);
+          }
+
+          _context2.next = 15;
+          break;
+
+        case 12:
+          _context2.prev = 12;
+          _context2.t0 = _context2["catch"](0);
+          console.error("Cannot fetch tasks:", _context2.t0);
+
+        case 15:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, null, null, [[0, 12]]);
 } // Load data from localStorage
 
 
@@ -96,9 +159,9 @@ function setupEventListeners() {
   document.querySelectorAll(".priority-option").forEach(function (btn) {
     btn.addEventListener("click", function () {
       var priority = btn.dataset.priority;
+      var tagsInput = document.getElementById("tagsTask");
       var dateInput = document.getElementById("deadlineDate");
       var timeInput = document.getElementById("deadlineTime");
-      var tagInput = document.getElementById("tagsTask");
       var deadline = "";
 
       if (!dateInput.value || !timeInput.value) {
@@ -124,12 +187,12 @@ function setupEventListeners() {
       if (modalMode === "add") {
         dateInput.value = "";
         timeInput.value = "";
-        var rawTags = tagInput.value.match(/#\w+/g);
+        var tagsConverted = tagsInput.value.match(/#\w+/g);
         var newTask = {
           text: tempText,
           completed: false,
           priority: priority,
-          tags: rawTags ? rawTags.map(function (tag) {
+          tags: tagsConverted ? tagsConverted.map(function (tag) {
             return tag.replace('#', '');
           }) : [],
           deadline: deadline
@@ -208,7 +271,7 @@ function createTaskElement(task, index) {
   var span = document.createElement("span");
   span.textContent = task.text;
   span.classList.add(task.completed ? "completed" : "to-do");
-  var tags = document.createElement("span");
+  var tags = document.createElement("div");
   tags.classList.add("task-tags");
 
   if (Array.isArray(task.tags)) {

@@ -2,39 +2,47 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do List</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="container">
-    <div class="title">
-      <h1 contenteditable="" id="main-title"> My To-Do List</h1>
-      <input type="color" id="main-title-color-picker">
+    <div class="container">
+        <div class="title">
+            <h1 contenteditable="" id="main-title"> My To-Do List</h1>
+            <input type="color" id="main-title-color-picker">
+        </div>
+        <div class="title">
+            <h2 id="total-task">Total Task: </h2>
+            <input type="color" id="tasks-color-picker">
+        </div>
+        <div class="input-group">
+            <input type="text" id="toDoInput" placeholder="Enter your task...">
+            <button id="addBtn">Add</button>
+        </div>
+        <ul id="todoList"></ul>
+        <button id="openModal" class="btn">Select Background</button>
     </div>
-    <div class="title">
-      <h2 id="total-task">Total Task: </h2>
-      <input type="color" id="tasks-color-picker">
-    </div>
-    <div class="input-group">
-      <input type="text" id="toDoInput" placeholder="Enter your task...">
-      <button id="addBtn">Add</button>
-    </div>
-    <ul id="todoList"></ul>
-    <button id="openModal" class="btn">Select Background</button>
-  </div>
-  <div id="modal" class="modal-hidden">
-    <div class="modal-content">
-      `
-      <div class="image-options">
-        <img src="https://images.pexels.com/photos/982263/pexels-photo-982263.jpeg?auto=compress&cs=tinysrgb&w=600" data-url="https://images.pexels.com/photos/982263/pexels-photo-982263.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Picture 1" />
+    <div id="modal" class="modal-hidden">
+        <div class="modal-content">
+            `
+            <div class="image-options">
+                <img src="https://images.pexels.com/photos/982263/pexels-photo-982263.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    data-url="https://images.pexels.com/photos/982263/pexels-photo-982263.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="Picture 1" />
 
-        <img src="https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=600" data-url="https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Picture 2" />
+                <img src="https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    data-url="https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="Picture 2" />
 
-        <img src="https://images.pexels.com/photos/457881/pexels-photo-457881.jpeg?auto=compress&cs=tinysrgb&w=600" data-url="https://images.pexels.com/photos/457881/pexels-photo-457881.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Picture 3" />
-        <img src="https://www.pixelstalk.net/wp-content/uploads/2025/05/Apple-Desktop-Wallpaper-high-resolution-MacBook-Pro-theme-with-subtle-Apple-branding-620x349.webp" data-url="https://www.pixelstalk.net/wp-content/uploads/2025/05/Apple-Desktop-Wallpaper-high-resolution-MacBook-Pro-theme-with-subtle-Apple-branding-620x349.webp" alt="Apple Desktop Wallpaper" />
+                <img src="https://images.pexels.com/photos/457881/pexels-photo-457881.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    data-url="https://images.pexels.com/photos/457881/pexels-photo-457881.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="Picture 3" />
+                <img src="https://www.pixelstalk.net/wp-content/uploads/2025/05/Apple-Desktop-Wallpaper-high-resolution-MacBook-Pro-theme-with-subtle-Apple-branding-620x349.webp"
+                    data-url="https://www.pixelstalk.net/wp-content/uploads/2025/05/Apple-Desktop-Wallpaper-high-resolution-MacBook-Pro-theme-with-subtle-Apple-branding-620x349.webp"
+                    alt="Apple Desktop Wallpaper" />
 
             </div>
         </div>
@@ -52,6 +60,8 @@
                     <button class="priority-option" data-priority="high">High</button>
                     <button class="priority-option" data-priority="medium">Medium</button>
                     <button class="priority-option" data-priority="low">Low</button>
+                    <label>Tags:</label>
+                    <input type="text" id="tagsTask" />
                     <label>Ngày:</label>
                     <input type="date" id="deadlineDate" />
                     <label>Giờ:</label>

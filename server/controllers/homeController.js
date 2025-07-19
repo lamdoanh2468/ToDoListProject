@@ -1,3 +1,0 @@
-const getHomePage = (req, res) => {
-
-}
