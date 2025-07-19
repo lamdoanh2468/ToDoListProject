@@ -1,4 +1,4 @@
--- Dùng UTF-8 chuẩn
+-- Use UTF-8 properly
 SET NAMES 'utf8mb4';
 SET CHARACTER SET utf8mb4;
 
@@ -71,7 +71,9 @@ CREATE TABLE `user_background` (
   `set_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `accounts`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`background_id`) REFERENCES `backgrounds`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_UNICODE_CI;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Seed data
 INSERT INTO users (first_name, last_name, email)
 VALUES
 ('Lam', 'Doanh', 'lamdoanh@example.com'),
@@ -81,20 +83,23 @@ INSERT INTO accounts (username, password, user_id)
 VALUES
 ('lamdoanh01', '12345678', 1),
 ('thaonguyen92', '12345678', 2);
+
 INSERT INTO priority_levels (name, color)
 VALUES
 ('High', '#FF0000'),
 ('Medium', '#FFA500'),
 ('Low', '#00BFFF');
+
 INSERT INTO tasks (user_id, title, description, priority_id, deadline, completed)
 VALUES
-(1, 'Hoàn thành báo cáo tuần', 'Viết báo cáo và gửi trước thứ 6', 1, '2025-07-20 18:00:00', false),
-(1, 'Gửi email phản hồi khách hàng', 'Trả lời mail của Mr. John', 2, '2025-07-19 12:00:00', false),
-(2, 'Chuẩn bị slide thuyết trình', 'Slide cho buổi học nhóm', 3, '2025-07-21 09:00:00', false);
+(1, 'Finish weekly report', 'Write and submit the report before Friday', 1, '2025-07-20 18:00:00', false),
+(1, 'Reply to customer email', 'Respond to Mr. John''s email', 2, '2025-07-19 12:00:00', false),
+(2, 'Prepare presentation slides', 'Slides for the group study session', 3, '2025-07-21 09:00:00', false);
 
 INSERT INTO tags (name)
 VALUES
 ('work'), ('urgent'), ('client'), ('school'), ('personal');
+
 INSERT INTO task_tag (task_id, tag_id)
 VALUES
 (1, 1),  -- work
@@ -103,15 +108,18 @@ VALUES
 (2, 3),  -- client
 (3, 4),  -- school
 (3, 5);  -- personal
+
 INSERT INTO attachments (task_id, file_url)
 VALUES
 (1, 'https://example.com/report.docx'),
 (3, 'https://example.com/slides.pptx');
+
 INSERT INTO backgrounds (image_url, label)
 VALUES
 ('https://images.pexels.com/photo1.jpg', 'Nature Green'),
 ('https://images.pexels.com/photo2.jpg', 'Minimal Light'),
 ('https://images.pexels.com/photo3.jpg', 'Ocean Blue');
+
 INSERT INTO user_background (user_id, background_id)
 VALUES
 (1, 1),
